@@ -27,18 +27,34 @@ public class InventoryKeyHandler implements IKeyHandler{
 		case 'a':
 			if (Inventory.x > 0) {
 				Inventory.x--;
-			}
+			} else {
+				if (Inventory.area == InventoryAreas.Inventory) {
+					Inventory.area = InventoryAreas.CraftingGrid;
+				Inventory.x = Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1;
+				if (!(Inventory.y <= Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1)) {
+					Inventory.y = Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1;
+				}}
+				}
 			break;		
 		case 's':
-			if (Inventory.area == InventoryAreas.HotBar) {Inventory.area = InventoryAreas.Inventory;
+			if (Inventory.area == InventoryAreas.HotBar) {
+				Inventory.area = InventoryAreas.Inventory;
+
 			if (Inventory.x > Player.players[Client.PlayerID].inventory.Inventory.length - 1) {
 				Inventory.x = Player.players[Client.PlayerID].inventory.Inventory.length - 1;
 			}
 			
 			return;}
-						
+			
+			if (Inventory.area == InventoryAreas.Inventory) {
 			if (Inventory.y < Player.players[Client.PlayerID].inventory.Inventory[0].length - 1) {
 				Inventory.y++;
+			}}
+			
+			if (Inventory.area == InventoryAreas.CraftingGrid) {
+				if (Inventory.y < Player.players[Client.PlayerID].inventory.CraftingGrid[0].length - 1) {
+					Inventory.y++;
+				}	
 			}
 			
 			break;		
@@ -47,12 +63,21 @@ public class InventoryKeyHandler implements IKeyHandler{
 				if (Inventory.x < Player.players[Client.PlayerID].inventory.HotBar.length) {
 					Inventory.x++;
 				}
-			} else {
+		
+			if (Inventory.area == InventoryAreas.Inventory)
 				if (Inventory.x < Player.players[Client.PlayerID].inventory.Inventory.length - 1) {
 					Inventory.x++;
 				}
 			}
 			
+			if (Inventory.area == InventoryAreas.CraftingGrid) {
+				if (Inventory.x < Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1) {
+					Inventory.x++;
+				} else {
+					Inventory.area = InventoryAreas.Inventory;
+					Inventory.x = 0;
+				}
+			}
 			
 			break;
 		case 'e':
@@ -69,7 +94,8 @@ public class InventoryKeyHandler implements IKeyHandler{
 					Player.players[Client.PlayerID].inventory.drop(Inventory.area, Inventory.x, Inventory.y);
 				}
 			}
-			break;		
+			break;	
+
 		default:
 			break;		
 	}

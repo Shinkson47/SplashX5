@@ -12,7 +12,10 @@ GameOver,
 TileDev, 
 Extras, 
 GameLoad,
-Settings, Inventory, TileViewer
+Settings,
+Inventory,
+TileViewer, 
+Crafting
 
 //Game sub Windows
 //Bridging,

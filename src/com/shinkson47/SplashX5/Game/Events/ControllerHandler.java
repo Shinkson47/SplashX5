@@ -36,7 +36,7 @@ public class ControllerHandler {
 		} //Space
 	
 		if (state.bJustPressed) {
-			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), KeyEvent.KEY_PRESSED, 27, '•'));	
+			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), KeyEvent.KEY_PRESSED, (int) 'c', 'c'));
 		} //Space
 		
 		if (state.startJustPressed) {

@@ -11,8 +11,7 @@ public class Inventory {
 	
 	public TileStack HotBar[] = new TileStack[9];
 	public TileStack Inventory[][] = new TileStack[9][4];
-	public TileStack CraftingGrid[][] = new TileStack[4][4];
-
+	public TileStack CraftingGrid[][] = new TileStack[2][2];
 	public int HotBarSI = 0;
 	
 	public void lift(InventoryAreas area, int indexx, int indexy) {
@@ -39,6 +38,9 @@ public class Inventory {
 		try {
 		if (InMotion == null) { IsPicked = false; } else { IsPicked = true; }
 		} catch (Exception e) { IsPicked = false; }
+		
+		
+	
 	}
 	
 	public void drop(InventoryAreas area, int indexx, int indexy) {
