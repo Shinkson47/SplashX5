@@ -18,6 +18,7 @@ public class ControllerHandler {
 		manager.initSDLGamepad();
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void Update() {
 		
 		ControllerState state = manager.getState(0);
@@ -25,19 +26,19 @@ public class ControllerHandler {
 	
 		//ABXY
 		if (state.xJustPressed) {
-			mouseEventHandler.mouseClicked(new MouseEvent(ClientWindow.window, 0, System.currentTimeMillis(), MouseEvent.SHIFT_DOWN_MASK, 0, 0, 1, false, MouseEvent.BUTTON1));
-		} //shift + lmb
+			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), KeyEvent.SHIFT_DOWN_MASK, (int) ' ', ' '));
+		} //shift + space
 		
 		if (state.yJustPressed) {
-			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), KeyEvent.KEY_PRESSED, (int) 'e', 'e'));
+			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), (int) 'e', 'e'));
 		} //e
 		if (state.aJustPressed) {
-			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), KeyEvent.KEY_PRESSED, (int) ' ', ' '));	
+			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), (int) ' ', ' '));	
 		} //Space
 	
 		if (state.bJustPressed) {
 			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), KeyEvent.KEY_PRESSED, (int) 'c', 'c'));
-		} //Space
+		} //c
 		
 		if (state.startJustPressed) {
 			EventHandler.Listener.keyPressed(new KeyEvent(ClientWindow.window, 0, System.currentTimeMillis(), KeyEvent.KEY_PRESSED, 27, '•'));	

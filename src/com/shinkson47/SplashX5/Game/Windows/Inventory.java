@@ -115,6 +115,7 @@ public class Inventory {
 		
 		
 		
+		
 		graphics.setColor(Color.white);	
 
 		

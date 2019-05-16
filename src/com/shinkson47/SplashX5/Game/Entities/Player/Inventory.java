@@ -158,7 +158,12 @@ public class Inventory {
 			break;
 		}
 		
+		
 		try {
+
+		//Empty split check
+		if (InMotion.count == 0) {IsPicked = false; InMotion = null;}
+			
 		if (InMotion == null) { IsPicked = false; } else { IsPicked = true; }
 		} catch (Exception e) { IsPicked = false; }
 		

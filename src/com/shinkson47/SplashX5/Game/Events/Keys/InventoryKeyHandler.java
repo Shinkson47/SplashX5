@@ -63,12 +63,12 @@ public class InventoryKeyHandler implements IKeyHandler{
 				if (Inventory.x < Player.players[Client.PlayerID].inventory.HotBar.length) {
 					Inventory.x++;
 				}
-		
+			}
 			if (Inventory.area == InventoryAreas.Inventory)
 				if (Inventory.x < Player.players[Client.PlayerID].inventory.Inventory.length - 1) {
 					Inventory.x++;
 				}
-			}
+			
 			
 			if (Inventory.area == InventoryAreas.CraftingGrid) {
 				if (Inventory.x < Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1) {
