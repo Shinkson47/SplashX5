@@ -1,0 +1,89 @@
+== KEY ==
+Print = update the selected pixel with the selected colour - including delete when used with the CTRL modifyer.
+
+Cursor = A white square indicates the entire area that will be edited when you paint.
+
+== Notes ==
+There will be a menu item for extras, that will include the developer tools.
+For now though, the tile dev can be reached by pressing '#' at any point after loading the application.
+You can't exit out of it.
+
+Custom colours are displayed on the hot bar in the lower right.
+The selected colour is indicated with a gray border around the selected colour, and a dot above the selected colour in the same colour as it.
+The first colour hotbar item is 0, and the last is 9 - this doesn't match the keyboard number layout, but it works.
+
+When fully zoomed out, the gap between the pixels is removed, and the drawing is it's natural tile size of 64*64 pixels, lettings you get a view of what it'll really look like.
+
+The Java.swing dialogs used in the export can graphicaly behave strangely. If it does not render correctly, try mousing over the window or moving it to view what it is displaying.
+Some dialogs take text inputs. Please respect that these do not yet have input validation, meaning that where integer inputs are expected, inputting anything other than a valid whole number will cause a crash.
+
+A cached PNG of the current texture is automatically saved in ./Tiles/InProgress.png as you edit the current project.
+This is to back up your work, and is deleted when the project is exported.
+If the software is loaded with a cached project remaining in ./Tiles, i.e after closing without exporting or after a crash, it will prompt you to load it back into the tile editor.
+NOTE: that if you select not to load the existing cached image, it will be deleted and overwritten.  
+
+Drawing too fast will lead to gaps in the line. 
+I believe this is caused by the mouse event being interupted by the client's update loop (tick), with the cursor moving onto the next tile before the client returns to the mouse event - where it draws the next tile, skipping the one before it.
+I can't fix this, it's the fundemetal way of how the client operates.
+
+Could this same mouse get method and mouse event class be used in the game to interact with tiles?
+Possibly ray cast up to like three or four blocks away to harvest or interact.
+
+== TODO ==
+menu item
+UI underlay?
+font
+escape to exit to menu
+edit exsisting, exported, projects?
+The cursor is one px larger than the pixel it covers, but the code that causes that is required.
+
+Multiple hot bars
+Save pallettes
+Extra length for Tile overright
+
+
+== CONTROLS ==
+
+Moving:
+	WASD
+	Mouse cursor
+
+Cursor size:
+	+ = increase Cursor size (Max = 64)
+	- = decrease Cursor size (Min = 1)
+	
+Zooming:
+	Ctrl + + = zoom in
+	Ctrl + - = zoom out
+			
+Printing:
+	Space
+	Left Click (Pen down)
+
+Deleting:
+	CTRL + Space
+	CTRL + Left Click (Pen Down)
+
+Switching Colours:
+	[0 - 9] = Select colour [0 - 9]
+
+Modifying Colours:
+	CTRL + [0 - 9] = Use dialog to select new colour [0 - 9]
+	
+Exporting:
+	E = Start export
+
+== Tile import checklist ==
+Create new ITile class in Tiles Package
+Fill ITile with Tile data
+Tile name should have correct capitalisation.
+
+Create protected static instance in Tiles
+This should be the tile name, but the first capital is a lower case.
+Initialise to the new new ITile in Tiles
+
+Add tile to the Tiles Enumerator, matching the name to the tile name, with correct capitalisation
+
+Create Case in TileBase for initialising the tile
+
+Import texture, ensuring names match that specified in ITile
