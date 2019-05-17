@@ -21,7 +21,7 @@ public class Tiles {
 				try {
 					//See if a definition for this tile exists
 					@SuppressWarnings("unused")
-					Class<?> tileclass = Class.forName("com.shinkson47.SplashX5.Game.Resources.Tiles." + tile.toString()); 
+					Class<?> tileclass = Class.forName("com.shinkson47.SplashX5.Game.Resources.Tiles.tiles." + tile.toString()); 
 				} catch (Exception e) {
 					//if not Warn and skip
 					Logger.log("Ignoring enum for " + tile.toString() + ", as there is no tile definition." , Tiles.class, LogState.Warn);

@@ -12,6 +12,7 @@ import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 import com.shinkson47.SplashX5.Game.Events.ControllerHandler;
 import com.shinkson47.SplashX5.Game.Events.EventHandler;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
+import com.shinkson47.SplashX5.Game.Resources.Tiles.Crafting;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.Tiles;
 import com.shinkson47.SplashX5.Game.World.Maps;
 
@@ -32,6 +33,7 @@ public class Init {
 
 				DisplayLoad(45);
 				Tiles.init();
+				Crafting.init();
 				
 				DisplayLoad(51);
 				Maps.init();

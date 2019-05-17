@@ -1,7 +1,9 @@
 package com.shinkson47.SplashX5.Game.Entities.Player;
 
+import com.shinkson47.SplashX5.Client.Client;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
+import com.shinkson47.SplashX5.Game.Resources.Tiles.Crafting;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
 
@@ -20,6 +22,9 @@ public class Inventory {
 		case Armor:
 			break;
 		case CraftingGrid:
+			InMotion = CraftingGrid[indexx][indexy];
+			CraftingGrid[indexx][indexy] = null;
+			IsPicked = true;
 			break;
 		case HotBar:
 			InMotion = HotBar[indexx];
@@ -43,17 +48,37 @@ public class Inventory {
 	
 	}
 	
+	TileStack temp; 
 	public void drop(InventoryAreas area, int indexx, int indexy) {
 		SoundManager.PlayMisc("/Runtime/Confirm", true);
 		switch (area) {
 		case Armor:
 			break;
 		case CraftingGrid:
-			break;
+			if (CraftingGrid[indexx][indexy] != null) {
+			//Tile is not empty!
+				if (CraftingGrid[indexx][indexy].tile.tile == InMotion.tile.tile) {
+					if ((CraftingGrid[indexx][indexy].count + InMotion.count) > 64) {
+						int diff = 64 - CraftingGrid[indexx][indexy].count;
+						CraftingGrid[indexx][indexy].count = 64;
+						InMotion.count -= diff;
+					}}
+					} else {
+						CraftingGrid[indexx][indexy]= new TileStack(InMotion.tile, InMotion.count);
+						InMotion = null;
+						IsPicked = false;
+						
+					}
+					
+					
+
+			Crafting.craft(CraftingGrid, Client.PlayerID);
+			return;	
+//			temp = CraftingGrid[indexx][indexy];
+//			CraftingGrid[indexx][indexy] = InMotion;
+//			InMotion = temp;
 		case HotBar:
 			try {
-				if (HotBar[indexx] != null) {
-					//Tile is not empty!
 					if (HotBar[indexx] != null) {
 						//Tile is not empty!
 						if (HotBar[indexx].tile.tile == InMotion.tile.tile) {
@@ -68,12 +93,13 @@ public class Inventory {
 								IsPicked = false;
 								return;	
 							}
-						}
-					TileStack temp = HotBar[indexx];
+
+				}}
+					
+					temp = HotBar[indexx];
 					HotBar[indexx] = InMotion;
 					InMotion = temp;	
 					return;
-				}}
 			} catch (Exception e) {}
 			
 			HotBar[indexx] = InMotion;

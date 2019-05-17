@@ -137,12 +137,12 @@ public class Inventory {
 			} catch (Exception e) {}
 		}
 		
-		//inventory images
-		for (int x = 0; x <= Player.players[Client.PlayerID].inventory.Inventory.length - 1; x++) {
-			for (int y = 0; y <= Player.players[Client.PlayerID].inventory.Inventory[x].length - 1; y++) {
+		//Crafting grid
+		for (int x = 0; x <= Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1; x++) {
+			for (int y = 0; y <= Player.players[Client.PlayerID].inventory.CraftingGrid[x].length - 1; y++) {
 				try {
-					graphics.drawImage(Player.players[Client.PlayerID].inventory.Inventory[x][y].tile.Texture, ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y),null, null);
-					graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.Inventory[x][y].count), ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y) + Game.TileSize + Game.yoff);		
+					graphics.drawImage(Player.players[Client.PlayerID].inventory.CraftingGrid[x][y].tile.Texture, ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + (Game.TileSize * 2)) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y),null, null);
+					graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.CraftingGrid[x][y].count), ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + (Game.TileSize * 2)) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y) + Game.TileSize + Game.yoff);		
 				}catch (Exception e) {}
 			}	
 		}

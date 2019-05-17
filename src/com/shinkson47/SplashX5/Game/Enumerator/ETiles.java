@@ -22,5 +22,6 @@ Sand2,
 VolcanicBlue,
 VolcanicPurple,
 VolcanicOrange,
-VolcanicRed
+VolcanicRed,
+CraftingBench
 }

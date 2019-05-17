@@ -24,7 +24,7 @@ public class TileBase {
 		if (!Tiles.init) {
 			//We are creating tile definitions - pull definition from class.
 			try {
-				Class<?> tileclass = Class.forName("com.shinkson47.SplashX5.Game.Resources.Tiles." + Tile.toString()); 
+				Class<?> tileclass = Class.forName("com.shinkson47.SplashX5.Game.Resources.Tiles.tiles." + Tile.toString()); 
 				Field walkable = tileclass.getField("Walkable");
 				Walkable = walkable.getBoolean(walkable);
 				

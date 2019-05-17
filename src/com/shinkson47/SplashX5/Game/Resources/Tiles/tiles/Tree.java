@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX5.Game.Resources.Tiles;
+package com.shinkson47.SplashX5.Game.Resources.Tiles.tiles;
 
 import java.awt.Image;
 
