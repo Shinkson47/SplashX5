@@ -2,7 +2,6 @@ package com.shinkson47.SplashX5.Game.Resources.Tiles;
 
 import java.lang.reflect.Field;
 
-import com.shinkson47.SplashX5.Client.Client;
 import com.shinkson47.SplashX5.Client.Logger;
 import com.shinkson47.SplashX5.Game.Entities.Player.Player;
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
@@ -55,6 +54,18 @@ public class Crafting {
 		ShapelessRecipeBase sbase = GetShapelessRecipe(craftingGrid);
 		if (sbase != null) {
 			Player.players[playerID].inventory.collect(sbase.output.tile);
+			for (int x = 0; x <= craftingGrid.length - 1; x++) {
+				for (int y = 0; y <= craftingGrid[x].length - 1; y++) {
+					try {
+						if (craftingGrid[x][y] == null) {continue;}
+					} catch (Exception e) { continue;}
+					
+					if (sbase.MatchesItem(craftingGrid[x][y])) {
+						craftingGrid[x][y].count -= sbase.getRequiredCount(craftingGrid[x][y]);
+						if (craftingGrid[x][y].count <= 0) {craftingGrid[x][y] = null;}
+					}
+					}
+				}	
 			return;
 		}
 		
@@ -67,8 +78,8 @@ public class Crafting {
 		for (ShapelessRecipeBase base : ShapelessDictionary) {
 			
 			boolean match = true;
-			for (int x = 0; x <= craftingGrid.length; x++) {
-				for (int y = 0; y <= craftingGrid[x].length; y++) {
+			for (int x = 0; x <= craftingGrid.length - 1; x++) {
+				for (int y = 0; y <= craftingGrid[x].length - 1; y++) {
 					try {
 						if (craftingGrid[x][y] == null) {continue;}
 					} catch (Exception e) { continue;}

@@ -35,6 +35,18 @@ public class ShapelessRecipeBase {
 		
 		return match;
 	}
+
+	public int getRequiredCount(TileStack tileStack) {
+		int count = 0;
+		for (TileStack test : craftingList) {
+			try {if (test == null) {continue;}} catch (Exception e) {continue;}
+			
+			if (test.tile.tile == tileStack.tile.tile) {
+				count += test.count;
+			}
+		}
+		return count;
+	}
 	
 	
 	
