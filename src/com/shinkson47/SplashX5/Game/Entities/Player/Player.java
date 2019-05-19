@@ -10,6 +10,7 @@ import com.shinkson47.SplashX5.Game.Enumerator.EntitySounds;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
+import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
 import com.shinkson47.SplashX5.Game.Windows.Game;
 import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
@@ -217,7 +218,7 @@ public class Player {
 					//Foretile
 					if (CurrentMap.TileSet[x][y].ForeTile.IsHarvestable) {
 						if (x == Player.players[Client.PlayerID].X && y == Player.players[Client.PlayerID].Y) {return;}
-						players[Client.PlayerID].inventory.collect(CurrentMap.TileSet[x][y].ForeTile);
+						players[Client.PlayerID].inventory.collect(new TileStack(CurrentMap.TileSet[x][y].ForeTile, 1));
 						CurrentMap.TileSet[x][y].ForeTile = null;
 					}
 					return;
@@ -232,7 +233,7 @@ public class Player {
 			//Base tile
 		if (CurrentMap.TileSet[x][y].IsHarvestable) {
 			if (x == Player.players[Client.PlayerID].X && y == Player.players[Client.PlayerID].Y) {return;}
-			players[Client.PlayerID].inventory.collect(CurrentMap.TileSet[x][y]);
+			players[Client.PlayerID].inventory.collect(new TileStack(CurrentMap.TileSet[x][y], 1));
 			CurrentMap.TileSet[x][y] = null;
 		}
 	} catch (Exception e) {}

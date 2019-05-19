@@ -199,17 +199,17 @@ public class Inventory {
 		
 	}
 	
-	public void collect(TileBase tile) { //TODO stack max
+	public void collect(TileStack Tile) { //TODO stack max
 		
 		for (int x = 0; x <= HotBar.length - 1; x++) {
 			try {	
 				
-			if (HotBar[x].tile.tile == tile.tile) { 
-				if (HotBar[x].add()) {return;}
+			if (HotBar[x].tile.tile == Tile.tile.tile) { 
+				if (HotBar[x].add(Tile.count)) {return;}
 			}
 			
 			} catch (Exception e) {
-				HotBar[x] = new TileStack(tile,1);
+				HotBar[x] = new TileStack(Tile.tile,Tile.count);
 				return;
 			} 
 		}
@@ -217,9 +217,9 @@ public class Inventory {
 		for (int x = 0; x <= HotBar.length - 1; x++) {
 			try {	
 			//If item is on hot bar, add it to stack
-			if (HotBar[x].tile == null) { HotBar[x].add(); return;}
+			if (HotBar[x].tile == null) { HotBar[x].add(Tile.count); return;}
 			} catch (Exception e) {
-				HotBar[x] = new TileStack(tile,1);
+				HotBar[x] = new TileStack(Tile.tile,Tile.count);
 				return;
 			}
 		}
@@ -230,7 +230,7 @@ public class Inventory {
 		for (int x = 0; x <= Inventory.length - 1; x++) {
 			for (int y = 0; y <= Inventory[x].length - 1; y++){
 				try {
-				if (Inventory[x][y].tile.tile == tile.tile) { Inventory[x][y].add(); return;}
+				if (Inventory[x][y].tile.tile == Tile.tile.tile) { Inventory[x][y].add(Tile.count); return;}
 				} catch (Exception e) {
 					if (!space) {
 					spacex = x;
@@ -242,7 +242,7 @@ public class Inventory {
 		
 		//else, add it to a space
 		if (space) {
-			Inventory[spacex][spacey] = new TileStack(tile,1);
+			Inventory[spacex][spacey] = new TileStack(Tile.tile, Tile.count);
 			return;
 			}
 		//TODO else add it to the void inventory

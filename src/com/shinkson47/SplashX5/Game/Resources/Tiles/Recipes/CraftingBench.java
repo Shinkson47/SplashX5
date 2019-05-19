@@ -5,7 +5,10 @@ import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
 
 public class CraftingBench {
-	public static TileStack[] craftingList = {new TileStack(new TileBase(-1,-1, ETiles.Tree,""), 1),null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null};
-	public static TileStack output = new TileStack(new TileBase(-1, -1, ETiles.Grass1, null), 1);
-	public static boolean isShapeless = true;
+	public static TileStack[][] craftingMatrix = {
+			{new TileStack(new TileBase(-1, -1, ETiles.Logs, null), 1),new TileStack(new TileBase(-1, -1, ETiles.Logs, null), 1),null,null},
+			{new TileStack(new TileBase(-1, -1, ETiles.Logs, null), 1),new TileStack(new TileBase(-1, -1, ETiles.Logs, null), 1),null,null}
+	};
+	public static TileStack output = new TileStack(new TileBase(-1, -1, ETiles.CraftingBench, null), 1);
+	public static boolean isShapeless = false;
 }

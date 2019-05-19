@@ -9,9 +9,9 @@ public class TileStack {
 		count = Count;
 	}
 	
-	public boolean add(){
-		if (count < 64) {
-			count++;
+	public boolean add(int i){
+		if (count + i < 64) {
+			count += i;
 			return true;
 		} else {
 			return false;

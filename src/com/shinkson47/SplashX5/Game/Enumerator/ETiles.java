@@ -23,5 +23,7 @@ VolcanicBlue,
 VolcanicPurple,
 VolcanicOrange,
 VolcanicRed,
-CraftingBench
+CraftingBench,
+
+Logs
 }
