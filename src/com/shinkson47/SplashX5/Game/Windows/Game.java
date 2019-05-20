@@ -225,8 +225,8 @@ public class Game {
 		graphics.setColor(Color.white);
 		for (int i = 0; i <= Player.players[Client.PlayerID].inventory.HotBar.length; i++) {
 			try {
-			graphics.drawImage(ResourceManager.getTexture("Tiles/" + Player.players[Client.PlayerID].inventory.HotBar[i].tile.tile.toString()), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
-			graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.HotBar[i].count), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i), Game.TileSize * 2);
+				graphics.drawImage(Player.players[Client.PlayerID].inventory.HotBar[i].tile.Texture, (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
+				graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.HotBar[i].count), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i), Game.TileSize * 2);
 			} catch (Exception e) {}
 		}
 	}

@@ -62,16 +62,18 @@ public class Inventory {
 						int diff = 64 - CraftingGrid[indexx][indexy].count;
 						CraftingGrid[indexx][indexy].count = 64;
 						InMotion.count -= diff;
+					
+					
+					} else {
+					CraftingGrid[indexx][indexy].count += InMotion.count;
+					InMotion = null;
+					IsPicked = false;
 					}}
 					} else {
-						CraftingGrid[indexx][indexy]= new TileStack(InMotion.tile, InMotion.count);
+						CraftingGrid[indexx][indexy] = new TileStack(InMotion.tile, InMotion.count);
 						InMotion = null;
 						IsPicked = false;
-						
 					}
-					
-					
-
 			Crafting.craft(CraftingGrid, Client.PlayerID);
 			return;	
 //			temp = CraftingGrid[indexx][indexy];
@@ -86,16 +88,20 @@ public class Inventory {
 								int diff = 64 - HotBar[indexx].count;
 								HotBar[indexx].count = 64;
 								InMotion.count -= diff;
+								if (InMotion.count <= 0) {IsPicked = false;}
 								return;
 							} else {
 								HotBar[indexx].count += InMotion.count;
 								InMotion = null;
 								IsPicked = false;
 								return;	
+							}}
+							} else {
+								HotBar[indexx].count += InMotion.count;
+								InMotion = null;
+								IsPicked = false;
+								return;	
 							}
-
-				}}
-					
 					temp = HotBar[indexx];
 					HotBar[indexx] = InMotion;
 					InMotion = temp;	
@@ -123,13 +129,18 @@ public class Inventory {
 							InMotion = null;
 							IsPicked = false;
 							return;	
+						}}} else {
+							Inventory[indexx][indexy].count += InMotion.count;
+							InMotion = null;
+							IsPicked = false;
+							return;	
 						}
-					}
+					
 					TileStack temp = Inventory[indexx][indexy];
 					Inventory[indexx][indexy] = InMotion;
 					InMotion = temp;	
 					return;
-				}
+				
 			} catch (Exception e) {}
 			
 			Inventory[indexx][indexy] = InMotion;
@@ -141,7 +152,14 @@ public class Inventory {
 		}
 
 		try {
-		if (InMotion == null) { IsPicked = false; } else { IsPicked = true; }
+		if (InMotion == null) { IsPicked = false; } else { 
+			try {
+				if (InMotion.count <= 0) { InMotion = null; }
+				IsPicked = false;
+		} catch (Exception e) {
+			IsPicked = false;
+		}
+		}
 		} catch (Exception e) { IsPicked = false; }
 	}	
 
@@ -151,6 +169,18 @@ public class Inventory {
 		case Armor:
 			break;
 		case CraftingGrid:
+			if (CraftingGrid[indexx][indexy].count % 2 == 0) {
+				InMotion = new TileStack(new TileBase(-1,-1,CraftingGrid[indexx][indexy].tile.tile,""), CraftingGrid[indexx][indexy].count);
+				InMotion.count /= 2;
+				CraftingGrid[indexx][indexy].count /= 2;
+				IsPicked = true;	
+			} else {
+				InMotion = new TileStack(new TileBase(-1,-1,CraftingGrid[indexx][indexy].tile.tile,""), CraftingGrid[indexx][indexy].count);
+				InMotion.count /= 2;
+				CraftingGrid[indexx][indexy].count /= 2;
+				CraftingGrid[indexx][indexy].count ++;
+				IsPicked = true;	
+			}
 			break;
 		case HotBar:
 			if (HotBar[indexx].count % 2 == 0) {

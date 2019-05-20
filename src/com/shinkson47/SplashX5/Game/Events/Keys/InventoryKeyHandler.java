@@ -94,7 +94,10 @@ public class InventoryKeyHandler implements IKeyHandler{
 					Player.players[Client.PlayerID].inventory.drop(Inventory.area, Inventory.x, Inventory.y);
 				}
 			}
-			break;	
+			break;
+		case 'c':
+			
+			break;
 
 		default:
 			break;		

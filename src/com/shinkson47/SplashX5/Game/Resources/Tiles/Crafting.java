@@ -88,15 +88,18 @@ public class Crafting {
 	private static ShapelessRecipeBase GetShapelessRecipe(TileStack[][] craftingGrid) {
 		for (ShapelessRecipeBase base : ShapelessDictionary) {
 			boolean match = true;
+			boolean absolute = false;
 			for (int x = 0; x <= craftingGrid.length - 1; x++) {
 				for (int y = 0; y <= craftingGrid[x].length - 1; y++) {
 					try {
 						if (craftingGrid[x][y] == null) {continue;}
-					} catch (Exception e) { continue;}					
+					} catch (Exception e) { continue;} 
+					
+					if (!absolute) {absolute = true;}
 					if (!base.MatchesItem(craftingGrid[x][y])) {match = false;}
 				}
 			}
-			if (match) {
+			if (match && absolute) {
 				return base;
 			}
 		}

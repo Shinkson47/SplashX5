@@ -67,6 +67,9 @@ public class Inventory {
 		graphics.drawRoundRect(ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + (Game.TileSize * 3)) , ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[1].length) - Game.TileSize, (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid.length * 2) + Game.TileSize), Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + Game.TileSize + Game.yoff,30,30);	
 		graphics.drawRoundRect((ClientWindow.window.getWidth() / 2) - (Game.TileSize * 10), Game.TileSize - Game.yoff + 2, Game.TileSize * 19, (Game.yoff * 3) + Game.TileSize,30,30);	
 		
+		graphics.drawString("Crafting", ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + (Game.TileSize * 3)) , ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[1].length) - Game.TileSize - 10);
+		
+		graphics.drawString("Inventory",ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - Game.TileSize, ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[1].length) - Game.TileSize - 10);
 		graphics.setColor(Color.DARK_GRAY);
 		
 		//inventory boxes
@@ -132,10 +135,12 @@ public class Inventory {
 		//hotbar images
 		for (int i = 0; i <= Player.players[Client.PlayerID].inventory.HotBar.length; i++) {
 			try {
-			graphics.drawImage(ResourceManager.getTexture("Tiles/" + Player.players[Client.PlayerID].inventory.HotBar[i].tile.tile.toString()), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
+			graphics.drawImage(Player.players[Client.PlayerID].inventory.HotBar[i].tile.Texture, (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
 			graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.HotBar[i].count), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i), Game.TileSize * 2);
 			} catch (Exception e) {}
 		}
+		
+		
 		
 		//Crafting grid
 		for (int x = 0; x <= Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1; x++) {
@@ -147,10 +152,22 @@ public class Inventory {
 			}	
 		}
 			
-		
 		//Display inmotion item
+		//Don't place more drawing commands below this!
 		try {
+			
+		if (Player.players[Client.PlayerID].inventory.InMotion == null) {return;}
+		
+		graphics.setColor(Color.DARK_GRAY);
+		graphics.fillRoundRect(100 - Game.TileSize, Game.yoff, Game.TileSize * 3, (Game.TileSize + Game.yoff) * 2,30,30);
+		
+		graphics.setColor(Color.white);
+		graphics.drawRoundRect(100 - Game.TileSize, Game.yoff, Game.TileSize * 3, (Game.TileSize + Game.yoff) * 2,30,30);
+			
 		graphics.drawImage(Player.players[Client.PlayerID].inventory.InMotion.tile.Texture, 100, Game.TileSize,null, null);
+		
+		graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.InMotion.count), 100, (Game.TileSize * 2) + Game.yoff);		
+		
 		} catch (Exception e) {}	
 		
 		}
