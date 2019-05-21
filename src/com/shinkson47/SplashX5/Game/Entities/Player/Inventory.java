@@ -4,7 +4,6 @@ import com.shinkson47.SplashX5.Client.Client;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.Crafting;
-import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
 
 public class Inventory {
@@ -62,18 +61,16 @@ public class Inventory {
 						int diff = 64 - CraftingGrid[indexx][indexy].count;
 						CraftingGrid[indexx][indexy].count = 64;
 						InMotion.count -= diff;
-					
-					
-					} else {
-					CraftingGrid[indexx][indexy].count += InMotion.count;
-					InMotion = null;
-					IsPicked = false;
 					}}
 					} else {
-						CraftingGrid[indexx][indexy] = new TileStack(InMotion.tile, InMotion.count);
+						CraftingGrid[indexx][indexy]= new TileStack(InMotion.tile, InMotion.count);
 						InMotion = null;
 						IsPicked = false;
+						
 					}
+					
+					
+
 			Crafting.craft(CraftingGrid, Client.PlayerID);
 			return;	
 //			temp = CraftingGrid[indexx][indexy];
@@ -81,36 +78,38 @@ public class Inventory {
 //			InMotion = temp;
 		case HotBar:
 			try {
-					if (HotBar[indexx] != null) {
+				if (HotBar[indexx] != null) {
 						//Tile is not empty!
 						if (HotBar[indexx].tile.tile == InMotion.tile.tile) {
 							if ((HotBar[indexx].count + InMotion.count) > 64) {
 								int diff = 64 - HotBar[indexx].count;
 								HotBar[indexx].count = 64;
 								InMotion.count -= diff;
-								if (InMotion.count <= 0) {IsPicked = false;}
+								InMotion = null;
+								IsPicked = false;
 								return;
 							} else {
 								HotBar[indexx].count += InMotion.count;
 								InMotion = null;
 								IsPicked = false;
 								return;	
-							}}
-							} else {
-								HotBar[indexx].count += InMotion.count;
-								InMotion = null;
-								IsPicked = false;
-								return;	
 							}
-					temp = HotBar[indexx];
+
+				} else {
+					TileStack temp = HotBar[indexx];
 					HotBar[indexx] = InMotion;
-					InMotion = temp;	
+					InMotion = temp;
 					return;
+				}} else {
+					HotBar[indexx] = InMotion;
+					InMotion = null;
+					IsPicked = false;		
+					return;
+				}
+				
 			} catch (Exception e) {}
-			
-			HotBar[indexx] = InMotion;
-			InMotion = null;
-			IsPicked = false;		
+
+
 			
 			break;
 		case Inventory:
@@ -129,18 +128,13 @@ public class Inventory {
 							InMotion = null;
 							IsPicked = false;
 							return;	
-						}}} else {
-							Inventory[indexx][indexy].count += InMotion.count;
-							InMotion = null;
-							IsPicked = false;
-							return;	
 						}
-					
+					}
 					TileStack temp = Inventory[indexx][indexy];
 					Inventory[indexx][indexy] = InMotion;
 					InMotion = temp;	
 					return;
-				
+				}
 			} catch (Exception e) {}
 			
 			Inventory[indexx][indexy] = InMotion;
@@ -152,89 +146,135 @@ public class Inventory {
 		}
 
 		try {
-		if (InMotion == null) { IsPicked = false; } else { 
-			try {
-				if (InMotion.count <= 0) { InMotion = null; }
-				IsPicked = false;
-		} catch (Exception e) {
-			IsPicked = false;
-		}
-		}
+		if (InMotion == null) { IsPicked = false; } else { IsPicked = true; }
 		} catch (Exception e) { IsPicked = false; }
 	}	
 
 	public void cut(InventoryAreas area, int indexx, int indexy) {
-		TileStack stack = null;
 		switch (area) {
 		case Armor:
 			break;
 		case CraftingGrid:
-			stack = CraftingGrid[indexx][indexy];
+			//Place half into stack
+			if (InMotion != null && CraftingGrid[indexx][indexy] != null) {
+				CraftingGrid[indexx][indexy].count += (InMotion.count /2);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				if (prevcount % 2 != 0) {
+					CraftingGrid[indexx][indexy].count++;
+				}
+			}
+			
+			//Take half into null
+			if (InMotion == null && CraftingGrid[indexx][indexy] != null) {
+				InMotion = new TileStack(CraftingGrid[indexx][indexy].tile, CraftingGrid[indexx][indexy].count);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				CraftingGrid[indexx][indexy].count /= 2;
+				
+				if (prevcount % 2 != 0) {
+					CraftingGrid[indexx][indexy].count++;
+				}
+			}
+			
+			//Place half into null
+			if (InMotion != null && CraftingGrid[indexx][indexy] == null) {
+			
+				CraftingGrid[indexx][indexy] = new TileStack(InMotion.tile, InMotion.count);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				CraftingGrid[indexx][indexy].count /= 2;
+				
+				if (prevcount % 2 != 0) {
+					CraftingGrid[indexx][indexy].count++;
+				}
+			}
 			break;
 		case HotBar:
-			stack = HotBar[indexx];
+			//Place half into stack
+			if (InMotion != null && HotBar[indexx] != null) {
+				HotBar[indexx].count += (InMotion.count /2);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				if (prevcount % 2 != 0) {
+					HotBar[indexx].count++;
+				}
+			}
+			
+			//Take half into null
+			if (InMotion == null && HotBar[indexx] != null) {
+				InMotion = new TileStack(HotBar[indexx].tile, HotBar[indexx].count);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				HotBar[indexx].count /= 2;
+				
+				if (prevcount % 2 != 0) {
+					HotBar[indexx].count++;
+				}
+			}
+			
+			//Place half into null
+			if (InMotion != null && HotBar[indexx] == null) {
+			
+				HotBar[indexx] = new TileStack(InMotion.tile, InMotion.count);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				HotBar[indexx].count /= 2;
+				
+				if (prevcount % 2 != 0) {
+					HotBar[indexx].count++;
+				}
+			}
 			break;
 		case Inventory:
-		stack = Inventory[indexx][indexy];
+			//Place half into stack
+			if (InMotion != null && Inventory[indexx][indexy] != null) {
+				Inventory[indexx][indexy].count += (InMotion.count /2);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				if (prevcount % 2 != 0) {
+					Inventory[indexx][indexy].count++;
+				}
+			}
+			
+			//Take half into null
+			if (InMotion == null && Inventory[indexx][indexy] != null) {
+				InMotion = new TileStack(Inventory[indexx][indexy].tile, Inventory[indexx][indexy].count);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				Inventory[indexx][indexy].count /= 2;
+				
+				if (prevcount % 2 != 0) {
+					Inventory[indexx][indexy].count++;
+				}
+			}
+			
+			//Place half into null
+			if (InMotion != null && Inventory[indexx][indexy] == null) {
+			
+				Inventory[indexx][indexy] = new TileStack(InMotion.tile, InMotion.count);
+				int prevcount = InMotion.count;
+				InMotion.count /= 2;
+				Inventory[indexx][indexy].count /= 2;
+				
+				if (prevcount % 2 != 0) {
+					Inventory[indexx][indexy].count++;
+				}
+			}
+			break;
+		default:
 			break;
 		}
-		performCut(stack);
 		
-		try {		
+		
+		try {
+		//Empty split check
+		if (InMotion.count == 0) {IsPicked = false; InMotion = null;}
+			
 		if (InMotion == null) { IsPicked = false; } else { IsPicked = true; }
 		} catch (Exception e) { IsPicked = false; }
 	}
 	
-	private void performCut(TileStack stack) {
-		try {
-		
-		//Place half
-		if (InMotion != null) {
-			
-		//Only if the slot is empty
-		try {
-			if (stack != null) {return;} else {throw new NullPointerException();}
-			} catch (Exception e) {
-	
-				stack.tile = new TileBase(-1,-1,InMotion.tile.tile, "");
-				stack.count = InMotion.count;
-				
-				if (stack.count % 2 == 0) {
-					stack.count /= 2;
-					InMotion.count /= 2;
-					} else {
-						stack.count /= 2;
-						InMotion.count /= 2;
-						stack.count++;
-					}
-			}}
-		
-		//Take half
-		} catch (Exception e) { 	
-			//only if there's something to split
-			try {
-			if (stack != null) {
-				
-				stack.tile = new TileBase(-1,-1,InMotion.tile.tile, "");
-				stack.count = InMotion.count;
-				
-			if (stack.count % 2 == 0) {
-				stack.count /= 2;
-				InMotion.count /= 2;
-				} else {
-					stack.count /= 2;
-					InMotion.count /= 2;
-					stack.count++;
-					
-		}} else {throw new NullPointerException();}} catch (Exception e1) {}}
-		
-		//Else do nothing
-		
-		//Empty split check
-		if (InMotion.count == 0) {IsPicked = false; InMotion = null;}
-		if (stack.count == 0) {stack = null;}
-	}
-
 	public void dump(InventoryAreas area, int indexx, int indexy) {
 		
 	}
