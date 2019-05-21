@@ -54,28 +54,38 @@ public class Inventory {
 		case Armor:
 			break;
 		case CraftingGrid:
-			if (CraftingGrid[indexx][indexy] != null) {
-			//Tile is not empty!
-				if (CraftingGrid[indexx][indexy].tile.tile == InMotion.tile.tile) {
-					if ((CraftingGrid[indexx][indexy].count + InMotion.count) > 64) {
-						int diff = 64 - CraftingGrid[indexx][indexy].count;
-						CraftingGrid[indexx][indexy].count = 64;
-						InMotion.count -= diff;
-					}}
-					} else {
-						CraftingGrid[indexx][indexy]= new TileStack(InMotion.tile, InMotion.count);
-						InMotion = null;
-						IsPicked = false;
-						
+			try {
+				if (CraftingGrid[indexx][indexy] != null) {
+					//Tile is not empty!
+					if (CraftingGrid[indexx][indexy].tile.tile == InMotion.tile.tile) {
+						if ((CraftingGrid[indexx][indexy].count + InMotion.count) > 64) {
+							int diff = 64 - CraftingGrid[indexx][indexy].count;
+							CraftingGrid[indexx][indexy].count = 64;
+							InMotion.count -= diff;
+							if (InMotion.count <= 0) {  IsPicked = false;}
+							Crafting.craft(CraftingGrid, Client.PlayerID);
+							return;
+						} else {
+							CraftingGrid[indexx][indexy].count += InMotion.count;
+							InMotion = null;
+							IsPicked = false;
+							Crafting.craft(CraftingGrid, Client.PlayerID);
+							return;	
+						}
 					}
-					
-					
-
+					TileStack temp = CraftingGrid[indexx][indexy];
+					CraftingGrid[indexx][indexy] = InMotion;
+					InMotion = temp;	
+					Crafting.craft(CraftingGrid, Client.PlayerID);
+					return;
+				}
+			} catch (Exception e) {}
+			
+			CraftingGrid[indexx][indexy] = InMotion;
+			InMotion = null;
+			IsPicked = false;		
 			Crafting.craft(CraftingGrid, Client.PlayerID);
-			return;	
-//			temp = CraftingGrid[indexx][indexy];
-//			CraftingGrid[indexx][indexy] = InMotion;
-//			InMotion = temp;
+			break;
 		case HotBar:
 			try {
 				if (HotBar[indexx] != null) {
@@ -94,7 +104,6 @@ public class Inventory {
 								IsPicked = false;
 								return;	
 							}
-
 				} else {
 					TileStack temp = HotBar[indexx];
 					HotBar[indexx] = InMotion;
@@ -156,6 +165,8 @@ public class Inventory {
 			break;
 		case CraftingGrid:
 			//Place half into stack
+			
+			
 			if (InMotion != null && CraftingGrid[indexx][indexy] != null) {
 				CraftingGrid[indexx][indexy].count += (InMotion.count /2);
 				int prevcount = InMotion.count;
@@ -189,6 +200,7 @@ public class Inventory {
 					CraftingGrid[indexx][indexy].count++;
 				}
 			}
+			
 			break;
 		case HotBar:
 			//Place half into stack
@@ -347,6 +359,90 @@ public class Inventory {
 	public void scrollHB(int direction) {
 		if (direction > 0 && HotBarSI < HotBar.length) { HotBarSI++;}
 		if (direction < 0 && HotBarSI > 0) { HotBarSI--;}
+	}
+
+	public void Single(InventoryAreas area, int x, int y) {
+			switch (area) {
+			case Armor:
+				break;
+			case CraftingGrid:
+				if (InMotion != null && CraftingGrid[x][y] != null) {if (InMotion.tile.tile != CraftingGrid[x][y].tile.tile) {return;} }
+				if (CraftingGrid[x][y] != null && InMotion != null) {
+					if (CraftingGrid[x][y].count > InMotion.count) {
+						InMotion.count++;
+						CraftingGrid[x][y].count--;
+					} else {
+						InMotion.count--;
+						CraftingGrid[x][y].count++;
+					}
+				}
+				
+				if (CraftingGrid[x][y] == null && InMotion != null) {
+					CraftingGrid[x][y] = new TileStack(InMotion.tile, 1);
+					InMotion.count--;
+				}
+				
+				if (CraftingGrid[x][y] != null && InMotion == null) {
+					InMotion = new TileStack(CraftingGrid[x][y].tile, 1);
+					CraftingGrid[x][y].count--;
+				}
+				try { if (CraftingGrid[x][y].count <= 0) {IsPicked = false; CraftingGrid[x][y] = null;} } catch (Exception e) {IsPicked = false; CraftingGrid[x][y] = null;}
+				Crafting.craft(CraftingGrid, Client.PlayerID);
+				break;
+			case HotBar:
+				if (InMotion != null && HotBar[x] != null) {if (InMotion.tile.tile != HotBar[x].tile.tile) {return;} }
+				if (HotBar[x] != null && InMotion != null) {
+					if (HotBar[x].count > InMotion.count) {
+						InMotion.count++;
+						HotBar[x].count--;
+					} else {
+						InMotion.count--;
+						HotBar[x].count++;
+					}
+				}
+				
+				if (HotBar[x] == null && InMotion != null) {
+					HotBar[x] = new TileStack(InMotion.tile, 1);
+					InMotion.count--;
+				}
+				
+				if (HotBar[x] != null && InMotion == null) {
+					InMotion = new TileStack(HotBar[x].tile, 1);
+					HotBar[x].count--;
+				}
+				try { if (HotBar[x].count <= 0) {IsPicked = false; HotBar[x] = null;} } catch (Exception e) {IsPicked = false; HotBar[x] = null;}
+				break;
+			case Inventory:
+				if (InMotion != null && Inventory[x][y] != null) {if (InMotion.tile.tile != Inventory[x][y].tile.tile) {return;} }
+				
+				if (Inventory[x][y] != null && InMotion != null) {
+					if (Inventory[x][y].count > InMotion.count) {
+						InMotion.count++;
+						Inventory[x][y].count--;
+					} else {
+						InMotion.count--;
+						Inventory[x][y].count++;
+					}
+				}
+				
+				if (Inventory[x][y] == null && InMotion != null) {
+					Inventory[x][y] = new TileStack(InMotion.tile, 1);
+					InMotion.count--;
+				}
+				
+				if (Inventory[x][y] != null && InMotion == null) {
+					InMotion = new TileStack(Inventory[x][y].tile, 1);
+					Inventory[x][y].count--;
+				}
+				try { if (Inventory[x][y].count <= 0) {IsPicked = false; Inventory[x][y] = null;} } catch (Exception e) {IsPicked = false; Inventory[x][y] = null;}
+				break;
+			default:
+				break;
+			}
+			
+			
+			try { if (InMotion.count <= 0) {IsPicked = false; InMotion = null;} } catch (Exception e) {IsPicked = false; InMotion = null;}
+			if (InMotion != null) {IsPicked = true;} else {IsPicked = false;}
 	}
 
 	

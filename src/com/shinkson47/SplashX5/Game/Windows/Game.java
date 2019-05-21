@@ -53,9 +53,6 @@ public class Game {
 	}
 
 	public static void Update() {
-		try {
-		ClientWindow.window.setTitle(Biomes.GetBiome(DisplayOffsetX,DisplayOffsetY).toString());
-		}catch (Exception e) {}
 		Player.Update(); //Update the player - movement etc
 	}
 

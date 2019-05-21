@@ -60,6 +60,7 @@ public class ClientWindow {
 	public static void SetWindow(Windows window) {
 		Windows tempWindow = window;
 		CurrentWindow = window;
+		Logger.log("Loading " + window, ClientHandler.class, LogState.Info);
 		try {
 			Class<?> Window = Class.forName("com.shinkson47.SplashX5.Game.Windows." + window.toString());
 			Method init = Window.getMethod("init");
@@ -71,7 +72,7 @@ public class ClientWindow {
 			CurrentWindow = tempWindow;
 		}
 		
-		Logger.log("Changed window to: " + window, ClientHandler.class, LogState.Info);
+	
 		
 	}
 

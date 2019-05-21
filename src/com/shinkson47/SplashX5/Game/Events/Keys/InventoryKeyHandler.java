@@ -56,7 +56,6 @@ public class InventoryKeyHandler implements IKeyHandler{
 					Inventory.y++;
 				}	
 			}
-			
 			break;		
 		case 'd':	
 			if (Inventory.area == InventoryAreas.HotBar) {
@@ -78,12 +77,10 @@ public class InventoryKeyHandler implements IKeyHandler{
 					Inventory.x = 0;
 				}
 			}
-			
 			break;
 		case 'e':
 				ClientWindow.SetWindow(Windows.Game);
 			break;
-			
 		case ' ':
 			if (EventHandler.key.isShiftDown()) {
 				Player.players[Client.PlayerID].inventory.cut(Inventory.area, Inventory.x, Inventory.y);	
@@ -96,9 +93,8 @@ public class InventoryKeyHandler implements IKeyHandler{
 			}
 			break;
 		case 'c':
-			
+			Player.players[Client.PlayerID].inventory.Single(Inventory.area, Inventory.x, Inventory.y);
 			break;
-
 		default:
 			break;		
 	}

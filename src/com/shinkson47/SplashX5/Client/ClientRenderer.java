@@ -52,28 +52,20 @@ public class ClientRenderer implements Renderer {
 	private static BufferedImage view = new BufferedImage(ClientWindow.width, ClientWindow.height, BufferedImage.TYPE_INT_RGB);
 	private static int[] pixels;
 	private static int colour;
-	private static Random rnd = new Random();
 	public static boolean CauseBackgroundUpdate = true;
 	private static void setBackground(Graphics graphics) {
 		view  = new BufferedImage(ClientWindow.window.getWidth(), ClientWindow.window.getHeight(), BufferedImage.TYPE_INT_RGB);
 		if (CauseBackgroundUpdate) {
 			pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
-			if (ClientWindow.window.hasFocus()) { //INFOCUS
-				
 				if (Client.KeyPressedInFrame) {
-					colour = 0x404080; //KeyFrame++; if (KeyFrame > 5) {
+					colour = 0x404080;
 				} else { 
-					//GameHandler.KeyPresses++;
-					//SplashX4.KeyPressedInFrame = false; KeyFrame = 0;}
 					colour = 0x303080;
 				}
 				
 			for(int index = 0; index < pixels.length; index++) {pixels[index] = colour;} //set array to colour
 			
-			} else { //if not in focus, do random static
-				for (int index = 0; index < pixels.length; index++) {
-					pixels[index] = (int)(rnd.nextInt() * 0xFFFFFF);}
-				}
+
 		
 		graphics.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
 		CauseBackgroundUpdate = !CauseBackgroundUpdate; //Update has been handled.

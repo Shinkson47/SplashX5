@@ -111,6 +111,7 @@ public class EventHandler {
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
+			DebugKeyHandler.process();
 		}};
 
 
