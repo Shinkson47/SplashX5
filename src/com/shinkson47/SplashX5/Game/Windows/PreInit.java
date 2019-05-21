@@ -23,7 +23,6 @@ public class PreInit {
 			return;
 		}
 
-		
 		Logger.log("PreInitialising Client", PreInit.class, LogState.Info);
 
 		ClientWindow.init(); //window is set before the client is loaded so the user can be shown that the client is loading.
