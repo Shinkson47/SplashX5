@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.shinkson47.SplashX5.Client.Client;
-import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Client.ClientRenderer;
+import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Game.Entities.Player.Player;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
+import com.shinkson47.SplashX5.Game.Events.Keys.DebugKeyHandler;
 import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
+import com.shinkson47.SplashX5.Game.World.BackgroundWorldGenerator;
 import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
 public class Inventory {
@@ -18,12 +20,14 @@ public class Inventory {
 	public static InventoryAreas area = InventoryAreas.Inventory;
 	public static TileBase[] Tiles = new TileBase[25565];
 	public static int x = 0, y = 0;
-
+	
 	public static void init() {
 		area = InventoryAreas.HotBar;
 		x = Player.players[Client.PlayerID].inventory.HotBarSI;
 	}
 	
+	
+
 	public static void Update() {
 		
 	}

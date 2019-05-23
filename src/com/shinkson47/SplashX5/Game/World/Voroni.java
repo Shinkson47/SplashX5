@@ -19,10 +19,10 @@ public class Voroni {
 		rnd = new Random(Seed);
 		generated = false;
 		ClientRenderer.Update();
-		size = sz;
-		cells = sz / CurrentMap.BScale;
+		size = sz + 1;
+		cells = size / CurrentMap.BScale;
 		int n = 0;
-		BiomeGrid = new Biome[sz][sz];
+		BiomeGrid = new Biome[size][size];
 		px = new int[cells];
 		py = new int[cells];
 		biome = new Biome[cells];

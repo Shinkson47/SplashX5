@@ -165,7 +165,7 @@ public class Inventory {
 			break;
 		case CraftingGrid:
 			//Place half into stack
-			
+			if (CraftingGrid[indexx][indexy] == null && InMotion == null) { return; } try {if (InMotion.tile.tile != CraftingGrid[indexx][indexy].tile.tile) { return; }} catch (Exception e) {} //one is null, continue
 			
 			if (InMotion != null && CraftingGrid[indexx][indexy] != null) {
 				CraftingGrid[indexx][indexy].count += (InMotion.count /2);
@@ -204,6 +204,7 @@ public class Inventory {
 			break;
 		case HotBar:
 			//Place half into stack
+			if (HotBar[indexx] == null && InMotion == null) { return; } try {if (InMotion.tile.tile != HotBar[indexx].tile.tile) { return; }} catch (Exception e) {} //one is null, continue
 			if (InMotion != null && HotBar[indexx] != null) {
 				HotBar[indexx].count += (InMotion.count /2);
 				int prevcount = InMotion.count;
@@ -239,6 +240,8 @@ public class Inventory {
 			}
 			break;
 		case Inventory:
+			if (Inventory[indexx][indexy] == null && InMotion == null) { return; } try {if (InMotion.tile.tile != Inventory[indexx][indexy].tile.tile) { return; }} catch (Exception e) {} //one is null, continue
+			
 			//Place half into stack
 			if (InMotion != null && Inventory[indexx][indexy] != null) {
 				Inventory[indexx][indexy].count += (InMotion.count /2);
@@ -293,11 +296,14 @@ public class Inventory {
 	
 	public void collect(TileStack Tile) { //TODO stack max
 		
-		for (int x = 0; x <= HotBar.length - 1; x++) {
+		//It if's on the hot bar, add it to the stack
+		for (int x = 0; x <= HotBar.length -1; x++) {
 			try {	
-				
-			if (HotBar[x].tile.tile == Tile.tile.tile) { 
-				if (HotBar[x].add(Tile.count)) {return;}
+				if (HotBar[x] == null) { continue; }
+			if (HotBar[x].tile.tile == Tile.tile.tile) {
+				int num = HotBar[x].add(Tile.count); 
+				if (num <= 0) {return;} else {Tile.count = num;}
+				//if not done, continue
 			}
 			
 			} catch (Exception e) {
@@ -306,14 +312,9 @@ public class Inventory {
 			} 
 		}
 		
-		for (int x = 0; x <= HotBar.length - 1; x++) {
-			try {	
-			//If item is on hot bar, add it to stack
-			if (HotBar[x].tile == null) { HotBar[x].add(Tile.count); return;}
-			} catch (Exception e) {
-				HotBar[x] = new TileStack(Tile.tile,Tile.count);
-				return;
-			}
+		//Create new tilestack on the hot bar, if there's room
+		for (int x = 0; x <= HotBar.length -1; x++) {
+			if (HotBar[x] == null) {HotBar[x] = new TileStack(Tile.tile, Tile.count); return;}
 		}
 		
 		//if the item is in the inventory, add it
@@ -321,8 +322,14 @@ public class Inventory {
 		int spacex = -1 , spacey = -1;
 		for (int x = 0; x <= Inventory.length - 1; x++) {
 			for (int y = 0; y <= Inventory[x].length - 1; y++){
-				try {
-				if (Inventory[x][y].tile.tile == Tile.tile.tile) { Inventory[x][y].add(Tile.count); return;}
+				try { 
+				if (Inventory[x][y].tile.tile == Tile.tile.tile) { 
+					int num = Inventory[x][y].add(Tile.count); 
+					if (num <= 0) {
+						return;
+					} //else continue
+				}
+				
 				} catch (Exception e) {
 					if (!space) {
 					spacex = x;
@@ -332,7 +339,7 @@ public class Inventory {
 			}	
 		}
 		
-		//else, add it to a space
+		//If there are no more items with room, add it to an empty space
 		if (space) {
 			Inventory[spacex][spacey] = new TileStack(Tile.tile, Tile.count);
 			return;
@@ -362,6 +369,14 @@ public class Inventory {
 	}
 
 	public void Single(InventoryAreas area, int x, int y) {
+			if (InMotion == null && IsPicked) {IsPicked = false;}
+			if (InMotion != null) {
+				if (InMotion.count <= 0){
+					InMotion = null;
+					IsPicked = false;
+					}
+				}
+		
 			switch (area) {
 			case Armor:
 				break;
@@ -386,7 +401,7 @@ public class Inventory {
 					InMotion = new TileStack(CraftingGrid[x][y].tile, 1);
 					CraftingGrid[x][y].count--;
 				}
-				try { if (CraftingGrid[x][y].count <= 0) {IsPicked = false; CraftingGrid[x][y] = null;} } catch (Exception e) {IsPicked = false; CraftingGrid[x][y] = null;}
+				try { if (CraftingGrid[x][y].count <= 0) {CraftingGrid[x][y] = null;} } catch (Exception e) {CraftingGrid[x][y] = null;}
 				Crafting.craft(CraftingGrid, Client.PlayerID);
 				break;
 			case HotBar:

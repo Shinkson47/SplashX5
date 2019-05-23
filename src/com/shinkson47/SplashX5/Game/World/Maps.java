@@ -24,7 +24,8 @@ public class Maps implements Runnable {
 	}
 	
 	public static void GenerateNew() {
-			TileBase TileSet[][] = new TileBase[CurrentMap.WorldBorder][CurrentMap.WorldBorder];
+			TileBase TileSet[][] = new TileBase[CurrentMap.WorldBorder + 1][CurrentMap.WorldBorder + 1	];
+			CurrentMap.TileSet = TileSet;
 			if (CurrentMap.Seed == 0) {
 				CurrentMap.Seed = System.nanoTime();
 			}
@@ -37,22 +38,18 @@ public class Maps implements Runnable {
 			InitChunkCount = 0;
 			
 			Biomes.generate();
-			int LoadModifyer = 100 / (Game.InitialChunkGenCount * 4);
-			int loadStep = 0;
-			GameLoad.LoadPercent = 0;
 			
-			for (int x = 0; x <= Game.ChunkSize * Game.InitialChunkGenCount; x += Game.ChunkSize) {
-				for (int y = 0; y <= Game.ChunkSize * Game.InitialChunkGenCount; y += Game.ChunkSize) {
-					loadStep++;
-					GameLoad.LoadPercent = (LoadModifyer * loadStep);
-					ClientRenderer.Update();
-					GenerateChunk(x,y, TileSet);
-					if (CurrentMap.CharStartX == -1 && CurrentMap.CharStartY == -1) {
-						if (Player.BoundCheck(x,y)) { CurrentMap.CharStartX = x; CurrentMap.CharStartY = y; }
-						
-					}
+			BackgroundWorldGenerator worker = new BackgroundWorldGenerator();
+			Thread thread = new Thread(worker);
+			thread.run();
+			
+			for (int width = 0; width < CurrentMap.WorldBorder / Game.ChunkSize; width++) {
+				for (int height = 0; height < CurrentMap.WorldBorder / Game.ChunkSize; height++) {
+					if (Player.BoundCheck(width * Game.ChunkSize,height * Game.ChunkSize)) { CurrentMap.CharStartX = width; CurrentMap.CharStartY = height; }			
 				}	
-			}
+			}		
+
+			
 			if ((CurrentMap.CharStartX == -1 && CurrentMap.CharStartY == -1)) {
 				Logger.log("Initial chunks are not habitable, Generating more.", Maps.class, LogState.Info);
 				int x = Game.InitialChunkGenCount, y = Game.InitialChunkGenCount;
@@ -84,7 +81,6 @@ public class Maps implements Runnable {
 	public static void GenerateChunk(int x, int y, TileBase tileset[][]) {
 		X = x;
 		Y = y;
-		Tileset = tileset;
 		Maps maps = new Maps();
 		thread = new Thread(maps);
 		InitChunkCount++;
