@@ -1,9 +1,11 @@
 package com.shinkson47.SplashX5.Game.Entities.Player;
 
+import com.shinkson47.SplashX5.Game.Enumerator.Direction;
 import com.shinkson47.SplashX5.Game.Enumerator.Gamemode;
 import com.shinkson47.SplashX5.Game.Enumerator.Realms;
 
 public class PlayerBase {
+	public Direction direction;
 	public int ID, X, Y, health = 20, hunger = 20, saturation = 100, SpeedMod = 0, Speed = 4, MoveTimer;
 	public Gamemode gamemode = Gamemode.SurviveAndThrive;
 	//public Direction direction = Direction.S;

@@ -8,7 +8,8 @@ import java.nio.file.Paths;
 
 import javax.swing.ImageIcon;
 
-import javafx.scene.shape.Path;
+import com.shinkson47.SplashX5.Game.Enumerator.Direction;
+import com.shinkson47.SplashX5.Game.Enumerator.Entity;
 
 public class ResourceManager {
 	public static java.nio.file.Path ResourcePath = Paths.get("./");
@@ -16,6 +17,38 @@ public class ResourceManager {
 	
 	public static void init() {
 		
+	}
+	
+	public static Image getEntityTexture(Entity entity, Direction d) {
+		String path = entity.toString() + "/";
+		
+		if (d == null) {d = Direction.S; }
+		switch (d){
+		case SE:
+		case E:
+			path += "Right";
+			break;
+			
+		case N:
+		case NE:
+			path += "Rear";
+			break;
+			
+		case NW:
+		case W:
+			path += "Left";
+			break;
+			
+		case SW:
+		case S:
+			path += "Front";
+			break;
+		}
+		
+		
+		ImageIcon img = new ImageIcon("./Resources/Entities/" + path + ".png");
+		
+		return img.getImage();
 	}
 	
 	public static Image getTexture(String name) {

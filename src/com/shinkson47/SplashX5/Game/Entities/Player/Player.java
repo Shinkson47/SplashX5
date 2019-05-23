@@ -141,8 +141,20 @@ public class Player {
 			}
 			}
 			
+			
 			//Set player speed, after they've moved to a new tile.
 			players[i].SpeedMod = CurrentMap.TileSet[players[i].X][players[i].Y].SpeedReduction;
+			
+			if (players[i].N && players[i].E) { players[i].direction = Direction.NE; continue;}
+			if (players[i].N && players[i].W) { players[i].direction = Direction.NW; continue;}
+			if (players[i].S && players[i].E) { players[i].direction = Direction.SE; continue;}
+			if (players[i].S && players[i].W) { players[i].direction = Direction.SW; continue;}
+			
+			if (players[i].N) { players[i].direction = Direction.N; continue;}
+			if (players[i].E) { players[i].direction = Direction.E; continue;}
+			if (players[i].S) { players[i].direction = Direction.S; continue;}
+			if (players[i].W) { players[i].direction = Direction.W; continue;}
+
 		}
 		
 	} catch (Exception e) {}

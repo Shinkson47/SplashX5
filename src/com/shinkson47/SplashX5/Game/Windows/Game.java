@@ -10,6 +10,7 @@ import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Client.ClientRenderer;
 import com.shinkson47.SplashX5.Game.Entities.Player.Player;
 import com.shinkson47.SplashX5.Game.Entities.Player.PlayerBase;
+import com.shinkson47.SplashX5.Game.Enumerator.Entity;
 import com.shinkson47.SplashX5.Game.Enumerator.Gamemode;
 import com.shinkson47.SplashX5.Game.Enumerator.Realms;
 import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
@@ -169,6 +170,19 @@ public class Game {
 					//Replace null tile.
 			}
 		
+		try {
+		//are any players on screen?
+		for (int i = 0; i <= Player.PlayerCount; i++) {
+			if (Player.players[i].X == x + Game.DisplayOffsetX) {
+				if (Player.players[i].Y == y + Game.DisplayOffsetY) {
+					//Display them
+					graphics.drawImage(ResourceManager.getEntityTexture(Entity.Player, Player.players[i].direction), (Player.players[i].X - Game.DisplayOffsetX) * Game.TileSize ,(Player.players[i].Y - Game.DisplayOffsetY) * (Game.TileSize - Game.yoff) - Game.TileSize, null,null);
+				}	
+			}
+		}
+		}catch (Exception e) {
+			//No player's exist.
+		}
 		
 		try {
 		//Display if the tile has a fore tile, display it.
@@ -182,19 +196,6 @@ public class Game {
 			}
 		}
 		
-		try {
-		//are any players on screen?
-		for (int i = 0; i <= Player.PlayerCount; i++) {
-			if (Player.players[i].X < (ClientWindow.window.getWidth() / Game.TileSize) + Game.DisplayOffsetX && Player.players[i].X > Game.DisplayOffsetX - 1) {
-				if (Player.players[i].Y < (ClientWindow.window.getHeight() / (Game.TileSize - Game.yoff)) + Game.DisplayOffsetY && Player.players[i].Y > Game.DisplayOffsetY) {
-					//Display them
-					graphics.drawImage(ResourceManager.getTexture("Entities/Player"), (Player.players[i].X - Game.DisplayOffsetX) * Game.TileSize ,(Player.players[i].Y - Game.DisplayOffsetY) * (Game.TileSize - Game.yoff), null,null);
-				}	
-			}
-		}
-		}catch (Exception e) {
-			//No player's exist.
-		}
 		
 		//Is the selector active?
 		if (Game.selector) {
