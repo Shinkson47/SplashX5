@@ -9,12 +9,12 @@ public class TileStack {
 		count = Count;
 	}
 	
-	public boolean add(int i){
-		if (count + i < 64) {
-			count += i;
-			return true;
+	public int add(int i){
+		if (count + i > 64) {
+			return Math.negateExact((64 - i) - count);
 		} else {
-			return false;
+			count += i;
+			return 0;
 		}
 	}
 	

@@ -12,7 +12,6 @@ import com.shinkson47.SplashX5.Game.World.CurrentMap;
 import com.shinkson47.SplashX5.Interfaces.IKeyHandler;
 
 public class DebugKeyHandler implements IKeyHandler{
-	
 
 	public static void process() {
 		switch (EventHandler.key.getKeyChar()) {

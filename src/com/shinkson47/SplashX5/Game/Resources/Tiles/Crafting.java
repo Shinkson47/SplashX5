@@ -50,7 +50,7 @@ public class Crafting {
 	public static void craft(TileStack[][] craftingGrid, int playerID) {
 		ShapedRecipeBase cbase = GetShapedRecipe(craftingGrid);
 		if (cbase != null) {
-			Player.players[playerID].inventory.collect(cbase.output);
+			Player.players[playerID].inventory.collect(new TileStack(cbase.output.tile, cbase.output.count));
 						
 			for (int x = 0; x <= craftingGrid.length - 1; x++) {
 				for (int y = 0; y <= craftingGrid[x].length - 1; y++) {
@@ -66,7 +66,7 @@ public class Crafting {
 		
 		ShapelessRecipeBase sbase = GetShapelessRecipe(craftingGrid);
 		if (sbase != null) {
-			Player.players[playerID].inventory.collect(sbase.output);
+			Player.players[playerID].inventory.collect(new TileStack(sbase.output.tile, sbase.output.count));
 			
 			//remove items from crafting grid
 			for (int x = 0; x <= craftingGrid.length - 1; x++) {
@@ -93,6 +93,7 @@ public class Crafting {
 				for (int y = 0; y <= craftingGrid[x].length - 1; y++) {
 					try {
 						if (craftingGrid[x][y] == null) {continue;}
+						if (base == null) {continue;}
 					} catch (Exception e) { continue;} 
 					
 					if (!absolute) {absolute = true;}

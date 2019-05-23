@@ -14,6 +14,7 @@ import com.shinkson47.SplashX5.Game.Enumerator.Gamemode;
 import com.shinkson47.SplashX5.Game.Enumerator.Realms;
 import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
+import com.shinkson47.SplashX5.Game.World.BackgroundWorldGenerator;
 import com.shinkson47.SplashX5.Game.World.Biomes;
 import com.shinkson47.SplashX5.Game.World.CurrentMap;
 import com.shinkson47.SplashX5.Game.World.Maps;
@@ -26,6 +27,9 @@ public class Game {
 	public static void init() {
 		if (!InGame) {
 			//init
+			BackgroundWorldGenerator worker = new BackgroundWorldGenerator();
+			Thread thread = new Thread(worker);
+			thread.run();
 			SoundManager.PlayGame();
 			InGame = true;
 			ClientWindow.fullscreen();

@@ -59,9 +59,9 @@ public class TileViewer {
 		graphics.drawImage(CurrentTile.Texture, (ClientWindow.window.getWidth() / 2) - (Game.TileSize / 2), ClientWindow.window.getHeight() / 2 - (Game.TileSize - Game.yoff) - 90,null,null);
 
 		graphics.drawString("Resouce name: " + CurrentTile.tile.toString(), (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 10);
-		graphics.drawString("Friendly name: TODO",  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 30);
+		graphics.drawString("Friendly name: " + CurrentTile.FriendlyName,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 30);
 		graphics.drawString("This tile causes damage: "+ CurrentTile.CausesDamage,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 50);
-		graphics.drawString("This tile causes damage: "+ CurrentTile.DamageMultiplyer,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 70);
+		graphics.drawString("Damage multiplyer: "+ CurrentTile.DamageMultiplyer,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 70);
 		graphics.drawString("This tile causes an event: "+ CurrentTile.CausesEvent,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 90);
 		graphics.drawString("Entity speed reduction: "+ CurrentTile.SpeedReduction,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 110);
 		graphics.drawString("This tile is a fluid: "+ CurrentTile.IsFluid,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 130);
