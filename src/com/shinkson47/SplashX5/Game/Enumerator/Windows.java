@@ -15,7 +15,8 @@ GameLoad,
 Settings,
 Inventory,
 TileViewer, 
-Crafting
+Crafting,
+CraftingBench
 
 //Game sub Windows
 //Bridging,

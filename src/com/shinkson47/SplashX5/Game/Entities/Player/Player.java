@@ -1,13 +1,16 @@
 	package com.shinkson47.SplashX5.Game.Entities.Player;
 
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Method;
 
 import com.shinkson47.SplashX5.Client.Client;
 import com.shinkson47.SplashX5.Client.ClientWindow;
+import com.shinkson47.SplashX5.Client.Logger;
 import com.shinkson47.SplashX5.Game.Enumerator.Direction;
 import com.shinkson47.SplashX5.Game.Enumerator.Entity;
 import com.shinkson47.SplashX5.Game.Enumerator.EntitySounds;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
+import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
@@ -138,9 +141,19 @@ public class Player {
 				UpdateScreenPosition(nextx, nexty);
 				SoundManager.PlayEntity(Entity.Player, EntitySounds.Walk);
 				Game.Selector(new MouseEvent(ClientWindow.window, 0, System.currentTimeMillis(), -1,-1,-1, 1, false), false);
+			} else {
+				//If the player can't go there, then there may be a tile that they can interact with.
+				//Is there a foretile?
+				if (CurrentMap.TileSet[nextx][nexty] != null) { //Null check, just prevents null pointers in the next if statement
+					if (CurrentMap.TileSet[nextx][nexty].ForeTile != null) {
+						//There is a foretile, does it cause an event?
+						if (CurrentMap.TileSet[nextx][nexty].ForeTile.CausesEvent) {
+							TileEvent(CurrentMap.TileSet[nextx][nexty].ForeTile); //Parse tile event
+						}
+					}	
+				}
 			}
 			}
-			
 			
 			//Set player speed, after they've moved to a new tile.
 			players[i].SpeedMod = CurrentMap.TileSet[players[i].X][players[i].Y].SpeedReduction;
@@ -160,8 +173,17 @@ public class Player {
 	} catch (Exception e) {}
 	
 }
-	
 
+	private static void TileEvent(TileBase tileBase) {
+		try {
+			Class<?> TileClass = Class.forName("com.shinkson47.SplashX5.Game.Resources.Tiles.tiles." + tileBase.tile.toString());
+			Method event = TileClass.getMethod("event");
+			event.invoke(null);
+		} catch (Exception e) {
+			Logger.log(e.getMessage(), Player.class, LogState.Error);
+			e.printStackTrace();
+		} //There is no class, no event, or the event threw an exception.
+	}
 
 	public static void UpdateScreenSpawn(int id) {
 		Game.DisplayOffsetX = Player.players[id].X - ((ClientWindow.window.getWidth() / Game.TileSize) / 2);
@@ -188,19 +210,21 @@ public class Player {
 
 
 	public static boolean BoundCheck(int x, int y) {
-		boolean tile = false;
 
-		try {
-			tile = CurrentMap.TileSet[x][y].Walkable;
-		} catch (Exception e) {}
-		
+		//If there's a fore tile, return false.
 		try {
 			if (CurrentMap.TileSet[x][y].ForeTile != null) {
-				tile = CurrentMap.TileSet[x][y].ForeTile.Walkable;
+				return false;
 			}
 		} catch (Exception e) {}
 		
-		return tile;
+		//Get background value
+		try {
+			return CurrentMap.TileSet[x][y].Walkable;
+		} catch (Exception e) {}
+		
+		//Just in case..
+		return false;
 	}
 
 
