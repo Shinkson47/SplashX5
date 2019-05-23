@@ -5,7 +5,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.lang.reflect.Method;
-import java.util.Random;
 
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 import com.shinkson47.SplashX5.Interfaces.Renderer;

@@ -48,8 +48,9 @@ public class SoundManager {
     	if (!Music.isActive() && Music.isOpen()) { Music.close(); }
     	} catch (Exception e) {}
     }
-        
-    private static int OWC = 5, HC, EGC, UGC;
+       
+    @SuppressWarnings("unused")
+	private static int OWC = 5, HC, EGC, UGC;
     private static void NextST() {
     	switch (CurrentMap.Diamention) {
 		case Heaven:

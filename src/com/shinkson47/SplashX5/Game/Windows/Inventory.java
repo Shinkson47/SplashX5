@@ -8,10 +8,8 @@ import com.shinkson47.SplashX5.Client.ClientRenderer;
 import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Game.Entities.Player.Player;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
-import com.shinkson47.SplashX5.Game.Events.Keys.DebugKeyHandler;
 import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
-import com.shinkson47.SplashX5.Game.World.BackgroundWorldGenerator;
 import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
 public class Inventory {

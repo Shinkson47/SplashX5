@@ -4,7 +4,6 @@ import com.shinkson47.SplashX5.Game.Windows.Game;
 
 public class BackgroundWorldGenerator implements Runnable {
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
 		for (int width = 0; width < CurrentMap.WorldBorder / Game.ChunkSize; width++) {

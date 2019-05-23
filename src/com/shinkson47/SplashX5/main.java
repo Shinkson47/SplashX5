@@ -17,10 +17,7 @@ public class main {
 		Logger.log("", PreInit.class, LogState.Info);
 		Logger.log("======================================", PreInit.class, LogState.Info);
 		
-	
-		
 		ClientWindow.SetWindow(Windows.PreInit);
 		ClientHandler.StartClient();
 		}
-	
 }

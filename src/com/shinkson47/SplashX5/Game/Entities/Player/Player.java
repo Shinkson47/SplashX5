@@ -11,6 +11,7 @@ import com.shinkson47.SplashX5.Game.Enumerator.Entity;
 import com.shinkson47.SplashX5.Game.Enumerator.EntitySounds;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
+import com.shinkson47.SplashX5.Game.Enumerator.Windows;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
@@ -175,6 +176,8 @@ public class Player {
 }
 
 	private static void TileEvent(TileBase tileBase) {
+		Windows initWindow = ClientWindow.GetWindow();
+		
 		try {
 			Class<?> TileClass = Class.forName("com.shinkson47.SplashX5.Game.Resources.Tiles.tiles." + tileBase.tile.toString());
 			Method event = TileClass.getMethod("event");
@@ -183,6 +186,8 @@ public class Player {
 			Logger.log(e.getMessage(), Player.class, LogState.Error);
 			e.printStackTrace();
 		} //There is no class, no event, or the event threw an exception.
+		
+		if (ClientWindow.GetWindow() != initWindow) {HaltMovement(Client.PlayerID);}
 	}
 
 	public static void UpdateScreenSpawn(int id) {

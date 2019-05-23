@@ -7,14 +7,12 @@ import javax.swing.JOptionPane;
 
 import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Client.Logger;
-import com.shinkson47.SplashX5.Client.ClientRenderer;
 import com.shinkson47.SplashX5.Game.Entities.Player.Player;
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 import com.shinkson47.SplashX5.Game.Enumerator.Windows;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.Tiles;
 import com.shinkson47.SplashX5.Game.Windows.Game;
-import com.shinkson47.SplashX5.Game.Windows.GameLoad;
 
 public class Maps implements Runnable {
 
