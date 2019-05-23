@@ -25,5 +25,6 @@ VolcanicOrange,
 VolcanicRed,
 CraftingBench,
 
-Logs
+Logs,
+WoodenPlanks
 }

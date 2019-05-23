@@ -20,34 +20,13 @@ public class ResourceManager {
 	}
 	
 	public static Image getEntityTexture(Entity entity, Direction d) {
-		String path = entity.toString() + "/";
-		
-		if (d == null) {d = Direction.S; }
-		switch (d){
-		case SE:
-		case E:
-			path += "Right";
-			break;
-			
-		case N:
-		case NE:
-			path += "Rear";
-			break;
-			
-		case NW:
-		case W:
-			path += "Left";
-			break;
-			
-		case SW:
-		case S:
-			path += "Front";
-			break;
-		}
+		String d1;
+		if (d == null) {d1 = "Default";} else {d1 = d.toString();}
 		
 		
-		ImageIcon img = new ImageIcon("./Resources/Entities/" + path + ".png");
 		
+		
+		ImageIcon img = new ImageIcon("./Resources/Entities/" + entity.toString() + "/"+ d1 + ".png");
 		return img.getImage();
 	}
 	
