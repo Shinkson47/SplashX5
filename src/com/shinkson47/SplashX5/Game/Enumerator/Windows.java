@@ -16,7 +16,8 @@ Settings,
 Inventory,
 TileViewer, 
 Crafting,
-CraftingBench
+CraftingBench,
+Chat
 
 //Game sub Windows
 //Bridging,

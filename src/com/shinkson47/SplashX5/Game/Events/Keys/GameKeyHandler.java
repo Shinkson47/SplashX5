@@ -28,10 +28,12 @@ public class GameKeyHandler {
 		case 'd':
 			Player.StartMove(Direction.E, Client.PlayerID);
 			break;
+		case 't':
+			ClientWindow.SetWindow(Windows.Chat);
+			break;
 		default:
 			break;
 	}
-		
 		if (EventHandler.key.getKeyCode() == 27) { Game.InGame = false; Game.Exit(); ClientWindow.SetWindow(Windows.Menu); } 
 	}
 	
