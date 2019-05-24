@@ -11,6 +11,7 @@ import com.shinkson47.SplashX5.Game.Windows.PreInit;
 public class main {
 	
 	public static void main(String[] args){
+		try {
 		Logger.log("======================================", PreInit.class, LogState.Info);
 		Logger.log("", PreInit.class, LogState.Info);
 		Logger.log(" Splash X5 is loading client " + Client.ClientVersion, PreInit.class, LogState.Info);
@@ -19,5 +20,9 @@ public class main {
 		
 		ClientWindow.SetWindow(Windows.PreInit);
 		ClientHandler.StartClient();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		}
 }
