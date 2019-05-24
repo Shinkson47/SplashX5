@@ -16,7 +16,7 @@ import com.shinkson47.SplashX5.Game.Events.EventHandler;
 public class Client implements Runnable {
 	public static ClientState state = ClientState.PreInit;
 	protected static boolean doClientRun = true;
-	public final static String ClientVersion = "V0.7.4-A", ClientName = "Splash X5 ";
+	public final static String ClientVersion = "V0.7.5-A", ClientName = "Splash X5 ";
 	public static boolean CauseCrash = false, KeyPressedInFrame = false, CauseRestart = false;
 	public static int LoadPercent = 0, ClientRestartCount = 0, PlayerID;
 	public static long ClientStartTime = 0L;
