@@ -15,9 +15,11 @@
  */
 
 package com.shinkson47.SplashX5.Game.World;
- 
-public class OpenSimplexNoise {
 
+import java.io.Serializable;
+
+public class OpenSimplexNoise implements Serializable {
+	private static final long serialVersionUID = 7293450338294084487L;
 	private static final double STRETCH_CONSTANT_2D = -0.211324865405187;    //(1/Math.sqrt(2+1)-1)/2;
 	private static final double SQUISH_CONSTANT_2D = 0.366025403784439;      //(Math.sqrt(2+1)-1)/2;
 	private static final double STRETCH_CONSTANT_3D = -1.0 / 6;              //(1/Math.sqrt(3+1)-1)/3;

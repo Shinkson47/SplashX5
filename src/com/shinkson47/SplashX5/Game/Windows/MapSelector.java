@@ -5,11 +5,10 @@ import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 
-import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Client.ClientRenderer;
+import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Game.Enumerator.Windows;
 import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
-import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
 public class MapSelector {
 
@@ -35,7 +34,7 @@ public class MapSelector {
 			try {
 				String i = JOptionPane.showInputDialog("Custom seed [long]");
 				long num = Long.parseLong(i);
-				CurrentMap.Seed = num;
+				Game.CurrentMap.Seed = num;
 			} catch (Exception e) { 
 				JOptionPane.showMessageDialog(ClientWindow.window,"That seed is not valid");
 			}
@@ -55,7 +54,7 @@ public class MapSelector {
 				int num =  Integer.parseInt(i);
 				
 				if (num < 10 || num > 25565) { throw new Exception("invalid border"); }
-				CurrentMap.WorldBorder = num;
+				Game.CurrentMap.WorldBorder = num;
 			} catch (Exception e) { 
 				JOptionPane.showMessageDialog(ClientWindow.window,"World border is not valid");
 			}
@@ -66,7 +65,7 @@ public class MapSelector {
 				float num = Float.parseFloat(i);
 				
 				if (num > 1f || num < -1f) { throw new Exception("invalid noise scale"); }
-				CurrentMap.NScale = num;
+				Game.CurrentMap.NScale = num;
 			} catch (Exception e) { 
 				JOptionPane.showMessageDialog(ClientWindow.window,"Invalid noise scale");
 			}
@@ -77,7 +76,7 @@ public class MapSelector {
 				int num = Integer.parseInt(i);
 				
 				if (num > 1f || num < -1f) { throw new Exception("invalid noise scale"); }
-				CurrentMap.BScale = num;
+				Game.CurrentMap.BScale = num;
 			} catch (Exception e) { 
 				JOptionPane.showMessageDialog(ClientWindow.window,"Invalid noise scale");
 			}
@@ -94,9 +93,9 @@ public class MapSelector {
 
 		case 0:
 			if (i > 0) {
-				CurrentMap.Seed = System.currentTimeMillis();
+				Game.CurrentMap.Seed = System.currentTimeMillis();
 			} else {
-				CurrentMap.Seed = System.nanoTime();
+				Game.CurrentMap.Seed = System.nanoTime();
 			}
 			break;
 			
@@ -106,20 +105,20 @@ public class MapSelector {
 			break;
 
 		case 2:
-			if (i < 0 && CurrentMap.WorldBorder > 100 ) {CurrentMap.WorldBorder -= 100;}
-			if (i > 0 && CurrentMap.WorldBorder < 25465 ) { CurrentMap.WorldBorder += 100;}
+			if (i < 0 && Game.CurrentMap.WorldBorder > 100 ) {Game.CurrentMap.WorldBorder -= 100;}
+			if (i > 0 && Game.CurrentMap.WorldBorder < 25465 ) { Game.CurrentMap.WorldBorder += 100;}
 			
-			if (CurrentMap.BScale > CurrentMap.WorldBorder) {CurrentMap.WorldBorder = CurrentMap.BScale;}
+			if (Game.CurrentMap.BScale > Game.CurrentMap.WorldBorder) {Game.CurrentMap.WorldBorder = Game.CurrentMap.BScale;}
 			break;
 
 		case 3:
-			if (i < 0 && CurrentMap.NScale > -1f ) { CurrentMap.NScale -= 0.001;}
-			if (i > 0 && CurrentMap.NScale < 1f ) { CurrentMap.NScale += 0.001;}
+			if (i < 0 && Game.CurrentMap.NScale > -1f ) { Game.CurrentMap.NScale -= 0.001;}
+			if (i > 0 && Game.CurrentMap.NScale < 1f ) { Game.CurrentMap.NScale += 0.001;}
 			break;
 
 		case 4:
-			if (i < 0 && CurrentMap.BScale > 10) { CurrentMap.BScale--;}
-			if (i > 0 && CurrentMap.BScale < CurrentMap.WorldBorder ) { CurrentMap.BScale++;}
+			if (i < 0 && Game.CurrentMap.BScale > 10) { Game.CurrentMap.BScale--;}
+			if (i > 0 && Game.CurrentMap.BScale < Game.CurrentMap.WorldBorder ) { Game.CurrentMap.BScale++;}
 			
 			break;		
 		}
@@ -135,19 +134,19 @@ public class MapSelector {
 		
 		graphics.setColor(Color.white);
 		graphics.drawString("Seed", (ClientWindow.window.getWidth() / 2) - 200, (ClientWindow.window.getHeight() / 2) - 100);
-		graphics.drawString(String.valueOf(CurrentMap.Seed), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 100);
+		graphics.drawString(String.valueOf(Game.CurrentMap.Seed), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 100);
 		
 		graphics.drawString("Initial chunk count", (ClientWindow.window.getWidth() / 2) - 200, (ClientWindow.window.getHeight() / 2) - 80);
 		graphics.drawString(String.valueOf(Game.InitialChunkGenCount), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 80);
 		
 		graphics.drawString("World size", (ClientWindow.window.getWidth() / 2) - 200, (ClientWindow.window.getHeight() / 2) - 60);
-		graphics.drawString(String.valueOf(CurrentMap.WorldBorder), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 60);
+		graphics.drawString(String.valueOf(Game.CurrentMap.WorldBorder), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 60);
 		
 		graphics.drawString("Terrain Noise scale", (ClientWindow.window.getWidth() / 2) - 200, (ClientWindow.window.getHeight() / 2) - 40);
-		graphics.drawString(String.valueOf(CurrentMap.NScale), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 40);
+		graphics.drawString(String.valueOf(Game.CurrentMap.NScale), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 40);
 		
 		graphics.drawString("Biome scale", (ClientWindow.window.getWidth() / 2) - 200, (ClientWindow.window.getHeight() / 2) - 20);
-		graphics.drawString(String.valueOf(CurrentMap.BScale), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 20);
+		graphics.drawString(String.valueOf(Game.CurrentMap.BScale), (ClientWindow.window.getWidth() / 2) + 200, (ClientWindow.window.getHeight() / 2) - 20);
 		
 		graphics.drawString("→", (ClientWindow.window.getWidth() / 2) - 250, (MapSelector.SelectedIndex * 20) + (ClientWindow.window.getHeight() / 2) - 100);
 		

@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -20,6 +21,7 @@ public class Client implements Runnable {
 	public static boolean CauseCrash = false, KeyPressedInFrame = false, CauseRestart = false;
 	public static int LoadPercent = 0, ClientRestartCount = 0, PlayerID;
 	public static long ClientStartTime = 0L;
+	public static Thread commandthread = new Thread(new ClientCommandline());
 	
 	@Override
 	public void run() {
@@ -34,6 +36,8 @@ public class Client implements Runnable {
 			state = ClientState.PostInit;
 			ClientWindow.SetWindow(Windows.PostInit);
 		}
+		
+		commandthread.start();
 		
 		Logger.log("Client is ready!", Client.class, LogState.Info);
 		long lastTime = System.nanoTime(); //Used to keep updates well timed
@@ -150,6 +154,18 @@ public class Client implements Runnable {
         catch (IOException except){
             //msg.setText("Network Exception");
         }
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void RestartCommandThread() {
+		if (Client.commandthread.isAlive()) {
+		try {
+			Client.commandthread.getClass().getMethod("Halt").invoke(null);
+			commandthread.stop();
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {}}
+		
+		commandthread = new Thread(new ClientCommandline());
+		commandthread.start();
 	}
 	
 }

@@ -40,7 +40,7 @@ public class EventHandler {
 			//Trigger once per focus loss 'OnPause' here.
 			//ClientWindow.window = Window.Paused;
 			
-			if (ClientWindow.GetWindow() == Windows.Game) {	Player.HaltMovement(Client.PlayerID); }
+			//if (ClientWindow.GetWindow() == Windows.Game) {	Player.HaltMovement(Client.PlayerID); }
 		} else {
 			//Trigger pause ticks here
 		}
@@ -93,6 +93,7 @@ public class EventHandler {
 			Method init = Window.getMethod("process");
 			init.invoke(null);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		}
 		

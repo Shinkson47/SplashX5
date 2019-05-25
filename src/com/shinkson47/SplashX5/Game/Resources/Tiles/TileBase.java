@@ -1,16 +1,17 @@
 
 package com.shinkson47.SplashX5.Game.Resources.Tiles;
 
-import java.awt.Image;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import com.shinkson47.SplashX5.Client.Logger;
 import com.shinkson47.SplashX5.Game.Enumerator.ETiles;
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 
-public class TileBase {
+public class TileBase implements Serializable{
+	private static final long serialVersionUID = 2573927502989301191L;
 	public ETiles tile;
-	public Image Texture = null;
+	public String Texture = null;
 	public boolean Walkable, CausesDamage, IsFluid, IsHarvestable, CausesEvent, SupportsForeTile, SupportsBaseTile;
 	public int DamageMultiplyer = 1, SpeedReduction = 1, XPos, YPos, Hardness;
 	public String TileData, FriendlyName, TileDrop; //Use to store misc data bout a tile, such as a sign's text.
@@ -50,7 +51,7 @@ public class TileBase {
 				SpeedReduction = speedReduction.getInt(speedReduction);
 				
 				Field texture = tileclass.getField("Texture");
-				Texture = (Image)texture.get(texture);	
+				Texture = (String) texture.get(texture);	
 				
 				if (Tile == ETiles.Tree) {
 					Logger.DoLogs = true;

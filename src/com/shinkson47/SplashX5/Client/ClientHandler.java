@@ -64,11 +64,13 @@ public class ClientHandler {
 			}}}
 		
 		private static void HandleCrash(int HaltCode) { //handle a client crash
+			
 			Client.state = ClientState.Crashed;
 			
 			ClientThread = null; //Dispose thread and client
 			client = null;
 			
+			JOptionPane.showMessageDialog(ClientWindow.window, Client.ClientName + Client.ClientVersion + " has crashed :(", getComment(), 1);
 			//Create error log.
 			Logger.log("Thread Closed. Uptime: " + String.valueOf(getUpTime()) + " Restart count: " + Client.ClientRestartCount + " Exit Code: " + HaltCode, ClientHandler.class, LogState.Error);
 			if (CrashException != null) {
@@ -77,19 +79,19 @@ public class ClientHandler {
 				Logger.log("Hash Code: " + CrashException.hashCode(), ClientHandler.class, LogState.Error);
 				Logger.log("Cause: " + CrashException.getCause(), ClientHandler.class, LogState.Error);
 				Logger.log("Class: " + CrashException.getClass(), ClientHandler.class, LogState.Error);
-				CrashException.printStackTrace(); //not logged, but is visible in the console.
-				CrashException = null;
 			}
 			
 			try {
-				Thread.sleep(100); //Delay gives time for exception to finish printing all lines before the comment is called.
+				Thread.sleep(1500); //Delay gives time for exception to finish printing all lines before the comment is called.
 			} catch (InterruptedException e) {
 			}
 			
-			//Log comment
+			
+			
+			CrashException.printStackTrace(); //not logged, but is visible in the console
+			CrashException = null;
 			Logger.log(getComment(), ClientHandler.class, LogState.Info);
-			Logger.writeOut(); //Print all logs to error file. Does not include stack trace.
-			JOptionPane.showMessageDialog(ClientWindow.window, Client.ClientName + Client.ClientVersion + " has crashed :(", getComment(), 1);
+			Logger.writeOut(); //Print all logs to error file.
 			Runtime.getRuntime().halt(HaltCode); //Close java runtime.
 		}
 		

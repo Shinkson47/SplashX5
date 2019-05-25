@@ -3,6 +3,7 @@ package com.shinkson47.SplashX5.Client;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 
@@ -48,7 +49,12 @@ public class Logger {
 				if (log == null || log.equals("null")) {continue;}
 				writer.append(System.lineSeparator() + log);
 			}
+			writer.append(System.lineSeparator() + System.lineSeparator());
 			writer.close();
+			
+			PrintStream ps = new PrintStream(file);
+			ClientHandler.CrashException.printStackTrace(ps);
+			ps.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

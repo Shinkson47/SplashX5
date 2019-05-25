@@ -17,7 +17,8 @@ Inventory,
 TileViewer, 
 Crafting,
 CraftingBench,
-Chat
+Chat,
+Dog
 
 //Game sub Windows
 //Bridging,

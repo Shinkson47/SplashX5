@@ -13,7 +13,6 @@ import com.shinkson47.SplashX5.Game.Enumerator.Entity;
 import com.shinkson47.SplashX5.Game.Enumerator.EntitySounds;
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 import com.shinkson47.SplashX5.Game.Windows.Game;
-import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
 public class SoundManager {
 	public static Clip sfx = null, Music = null;
@@ -52,7 +51,7 @@ public class SoundManager {
     @SuppressWarnings("unused")
 	private static int OWC = 5, HC, EGC, UGC;
     private static void NextST() {
-    	switch (CurrentMap.Diamention) {
+    	switch (Game.CurrentMap.Diamention) {
 		case Heaven:
 			break;
 		case Hell:
@@ -78,7 +77,7 @@ public class SoundManager {
     }
     
 	public static void PlayGame() {
-    	String Location = String.valueOf(ResourceManager.ResourcePath + "/Resources/Audio/Soundtrack/" + CurrentMap.Diamention.toString() + "/ST" +  STIndex + ".wav");
+    	String Location = String.valueOf(ResourceManager.ResourcePath + "/Resources/Audio/Soundtrack/" + Game.CurrentMap.Diamention.toString() + "/ST" +  STIndex + ".wav");
     	PlayFile(Location, false);
 	}
 

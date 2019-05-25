@@ -8,6 +8,7 @@ import java.awt.event.MouseWheelListener;
 
 import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Game.Enumerator.Windows;
+import com.shinkson47.SplashX5.Game.Windows.CraftingBench;
 import com.shinkson47.SplashX5.Game.Windows.Game;
 import com.shinkson47.SplashX5.Game.Windows.TileDev;
 
@@ -85,6 +86,11 @@ public class MouseEventHandler implements MouseMotionListener, MouseListener, Mo
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
 		if (ClientWindow.GetWindow() == Windows.Game) {
 			Game.scroll(arg0);
+			return;
+		}
+		
+		if (ClientWindow.GetWindow() == Windows.CraftingBench) {
+			CraftingBench.scroll(arg0);
 		}
 	}
 

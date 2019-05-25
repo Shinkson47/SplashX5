@@ -16,7 +16,6 @@ import com.shinkson47.SplashX5.Game.Resources.SoundManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
 import com.shinkson47.SplashX5.Game.Windows.Game;
-import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
 public class Player {
 	public static PlayerBase players[] = new PlayerBase[255];
@@ -145,11 +144,11 @@ public class Player {
 			} else {
 				//If the player can't go there, then there may be a tile that they can interact with.
 				//Is there a foretile?
-				if (CurrentMap.TileSet[nextx][nexty] != null) { //Null check, just prevents null pointers in the next if statement
-					if (CurrentMap.TileSet[nextx][nexty].ForeTile != null) {
+				if (Game.CurrentMap.TileSet[nextx][nexty] != null) { //Null check, just prevents null pointers in the next if statement
+					if (Game.CurrentMap.TileSet[nextx][nexty].ForeTile != null) {
 						//There is a foretile, does it cause an event?
-						if (CurrentMap.TileSet[nextx][nexty].ForeTile.CausesEvent) {
-							TileEvent(CurrentMap.TileSet[nextx][nexty].ForeTile); //Parse tile event
+						if (Game.CurrentMap.TileSet[nextx][nexty].ForeTile.CausesEvent) {
+							TileEvent(Game.CurrentMap.TileSet[nextx][nexty].ForeTile); //Parse tile event
 						}
 					}	
 				}
@@ -157,7 +156,7 @@ public class Player {
 			}
 			
 			//Set player speed, after they've moved to a new tile.
-			players[i].SpeedMod = CurrentMap.TileSet[players[i].X][players[i].Y].SpeedReduction;
+			players[i].SpeedMod = Game.CurrentMap.TileSet[players[i].X][players[i].Y].SpeedReduction;
 			
 			if (players[i].N && players[i].E) { players[i].direction = Direction.NE; continue;}
 			if (players[i].N && players[i].W) { players[i].direction = Direction.NW; continue;}
@@ -218,14 +217,14 @@ public class Player {
 
 		//If there's a fore tile, return false.
 		try {
-			if (CurrentMap.TileSet[x][y].ForeTile != null) {
+			if (Game.CurrentMap.TileSet[x][y].ForeTile != null) {
 				return false;
 			}
 		} catch (Exception e) {}
 		
 		//Get background value
 		try {
-			return CurrentMap.TileSet[x][y].Walkable;
+			return Game.CurrentMap.TileSet[x][y].Walkable;
 		} catch (Exception e) {}
 		
 		//Just in case..
@@ -253,14 +252,14 @@ public class Player {
 		try {
 			//Foretile
 			try {
-				if (CurrentMap.TileSet[x][y].ForeTile == null || CurrentMap.TileSet[x][y].ForeTile.Texture == null) {
+				if (Game.CurrentMap.TileSet[x][y].ForeTile == null || Game.CurrentMap.TileSet[x][y].ForeTile.Texture == null) {
 					throw new NullPointerException();
 				} else {
 					//Foretile
-					if (CurrentMap.TileSet[x][y].ForeTile.IsHarvestable) {
+					if (Game.CurrentMap.TileSet[x][y].ForeTile.IsHarvestable) {
 						if (x == Player.players[Client.PlayerID].X && y == Player.players[Client.PlayerID].Y) {return;}
-						players[Client.PlayerID].inventory.collect(new TileStack(CurrentMap.TileSet[x][y].ForeTile, 1));
-						CurrentMap.TileSet[x][y].ForeTile = null;
+						players[Client.PlayerID].inventory.collect(new TileStack(Game.CurrentMap.TileSet[x][y].ForeTile, 1));
+						Game.CurrentMap.TileSet[x][y].ForeTile = null;
 					}
 					return;
 				}
@@ -272,10 +271,10 @@ public class Player {
 			
 			
 			//Base tile
-		if (CurrentMap.TileSet[x][y].IsHarvestable) {
+		if (Game.CurrentMap.TileSet[x][y].IsHarvestable) {
 			if (x == Player.players[Client.PlayerID].X && y == Player.players[Client.PlayerID].Y) {return;}
-			players[Client.PlayerID].inventory.collect(new TileStack(CurrentMap.TileSet[x][y], 1));
-			CurrentMap.TileSet[x][y] = null;
+			players[Client.PlayerID].inventory.collect(new TileStack(Game.CurrentMap.TileSet[x][y], 1));
+			Game.CurrentMap.TileSet[x][y] = null;
 		}
 	} catch (Exception e) {}
 	}
@@ -286,16 +285,16 @@ public class Player {
 		if (x == Player.players[Client.PlayerID].X && y == Player.players[Client.PlayerID].Y) {return;} //Don't place on the player
 		
 		try {
-			if (CurrentMap.TileSet[x][y] != null) {
+			if (Game.CurrentMap.TileSet[x][y] != null) {
 				
-			if (CurrentMap.TileSet[x][y].ForeTile == null) {
+			if (Game.CurrentMap.TileSet[x][y].ForeTile == null) {
 			//Foretile
 				if (Player.players[Client.PlayerID].inventory.HotBar[Player.players[Client.PlayerID].inventory.HotBarSI].count <= 0) {Player.players[Client.PlayerID].inventory.HotBar[Player.players[Client.PlayerID].inventory.HotBarSI] = null; return;} //Tilestack exsists but is empty, remove it and return.
 				if (!Player.players[Client.PlayerID].inventory.HotBar[Player.players[Client.PlayerID].inventory.HotBarSI].tile.SupportsForeTile) {return;}
 
-				CurrentMap.TileSet[x][y].ForeTile = new TileBase(x,y,players[Client.PlayerID].inventory.HotBar[players[Client.PlayerID].inventory.HotBarSI].tile.tile,"");
-				CurrentMap.TileSet[x][y].ForeTile.XPos = x;
-				CurrentMap.TileSet[x][y].ForeTile.YPos = y;
+				Game.CurrentMap.TileSet[x][y].ForeTile = new TileBase(x,y,players[Client.PlayerID].inventory.HotBar[players[Client.PlayerID].inventory.HotBarSI].tile.tile,"");
+				Game.CurrentMap.TileSet[x][y].ForeTile.XPos = x;
+				Game.CurrentMap.TileSet[x][y].ForeTile.YPos = y;
 				
 				players[Client.PlayerID].inventory.remove(InventoryAreas.HotBar,players[Client.PlayerID].inventory.HotBarSI,0,1);
 			}	
@@ -306,11 +305,16 @@ public class Player {
 			if (Player.players[Client.PlayerID].inventory.HotBar[Player.players[Client.PlayerID].inventory.HotBarSI].count <= 0) {Player.players[Client.PlayerID].inventory.HotBar[Player.players[Client.PlayerID].inventory.HotBarSI] = null; return;}
 			if (!Player.players[Client.PlayerID].inventory.HotBar[Player.players[Client.PlayerID].inventory.HotBarSI].tile.SupportsBaseTile) {return;}
 			
-			CurrentMap.TileSet[x][y] = new TileBase(x,y,players[Client.PlayerID].inventory.HotBar[players[Client.PlayerID].inventory.HotBarSI].tile.tile,"");
-			CurrentMap.TileSet[x][y].XPos = x;
-			CurrentMap.TileSet[x][y].YPos = y;
+			Game.CurrentMap.TileSet[x][y] = new TileBase(x,y,players[Client.PlayerID].inventory.HotBar[players[Client.PlayerID].inventory.HotBarSI].tile.tile,"");
+			Game.CurrentMap.TileSet[x][y].XPos = x;
+			Game.CurrentMap.TileSet[x][y].YPos = y;
 			
 			players[Client.PlayerID].inventory.remove(InventoryAreas.HotBar,players[Client.PlayerID].inventory.HotBarSI,0,1);
 			}} catch (Exception e) {}
+	}
+
+	public static void reset() {
+		PlayerCount = 0;
+		players = new PlayerBase[255];		
 	}	
 }

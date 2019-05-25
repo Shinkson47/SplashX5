@@ -56,7 +56,7 @@ public class TileViewer {
 		graphics.setColor(Color.white);
 		graphics.drawString((Tiles.TileCount - 1) + " tiles loaded", (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 - 180);
 		
-		graphics.drawImage(CurrentTile.Texture, (ClientWindow.window.getWidth() / 2) - (Game.TileSize / 2), ClientWindow.window.getHeight() / 2 - (Game.TileSize - Game.yoff) - 90,null,null);
+		graphics.drawImage(ResourceManager.getTexture(CurrentTile.Texture), (ClientWindow.window.getWidth() / 2) - (Game.TileSize / 2), ClientWindow.window.getHeight() / 2 - (Game.TileSize - Game.yoff) - 90,null,null);
 
 		graphics.drawString("Resouce name: " + CurrentTile.tile.toString(), (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 10);
 		graphics.drawString("Friendly name: " + CurrentTile.FriendlyName,  (ClientWindow.window.getWidth() / 2) - 120, ClientWindow.window.getHeight() / 2 + 30);

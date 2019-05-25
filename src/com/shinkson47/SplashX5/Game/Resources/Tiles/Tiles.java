@@ -2,8 +2,8 @@ package com.shinkson47.SplashX5.Game.Resources.Tiles;
 import com.shinkson47.SplashX5.Client.Logger;
 import com.shinkson47.SplashX5.Game.Enumerator.ETiles;
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
+import com.shinkson47.SplashX5.Game.Windows.Game;
 import com.shinkson47.SplashX5.Game.World.Biomes;
-import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
 public class Tiles {
 
@@ -57,7 +57,7 @@ public class Tiles {
 	//Biome Definitions
 	public static TileBase GetTile(int x, int y) {
 		ETiles tile = ETiles.Grass1;
-		double eval = CurrentMap.noise.eval(x * CurrentMap.NScale, y * CurrentMap.NScale);
+		double eval = Game.CurrentMap.noise.eval(x * Game.CurrentMap.NScale, y * Game.CurrentMap.NScale);
 			switch (Biomes.GetBiome(x,y)){
 			case Desert:
 				if (eval < -0.8){ tile = ETiles.Water; }

@@ -6,8 +6,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 
 import com.shinkson47.SplashX5.Client.Client;
-import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Client.ClientRenderer;
+import com.shinkson47.SplashX5.Client.ClientWindow;
 import com.shinkson47.SplashX5.Game.Entities.Player.Player;
 import com.shinkson47.SplashX5.Game.Entities.Player.PlayerBase;
 import com.shinkson47.SplashX5.Game.Enumerator.Entity;
@@ -15,22 +15,21 @@ import com.shinkson47.SplashX5.Game.Enumerator.Gamemode;
 import com.shinkson47.SplashX5.Game.Enumerator.Realms;
 import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
-import com.shinkson47.SplashX5.Game.World.BackgroundWorldGenerator;
 import com.shinkson47.SplashX5.Game.World.Biomes;
-import com.shinkson47.SplashX5.Game.World.CurrentMap;
+import com.shinkson47.SplashX5.Game.World.MapBase;
 import com.shinkson47.SplashX5.Game.World.Maps;
 
 public class Game {
 	
 	public static int ChunkSize = 10, InitialChunkGenCount = 2, DisplayOffsetX = 0, DisplayOffsetY = 0, TileSize = 36, yoff = 10;
 	public static boolean InGame = false;
-
+	public String valuetest = "arse";
+	public static MapBase CurrentMap = new MapBase();
+	
 	public static void init() {
 		if (!InGame) {
 			//init
-			BackgroundWorldGenerator worker = new BackgroundWorldGenerator();
-			Thread thread = new Thread(worker);
-			thread.run();
+			Maps.GenerateNew();
 			SoundManager.PlayGame();
 			InGame = true;
 			ClientWindow.fullscreen();
@@ -156,7 +155,7 @@ public class Game {
 		try {
 			//If there is a tile, draw it
 			if (CurrentMap.TileSet[x + Game.DisplayOffsetX][y + Game.DisplayOffsetY] != null) {
-					graphics.drawImage(CurrentMap.TileSet[x + Game.DisplayOffsetX][y + Game.DisplayOffsetY].Texture, Game.TileSize * x,((Game.TileSize - Game.yoff) * y),null,null);
+					graphics.drawImage(ResourceManager.getTexture(CurrentMap.TileSet[x + Game.DisplayOffsetX][y + Game.DisplayOffsetY].Texture), Game.TileSize * x,((Game.TileSize - Game.yoff) * y),null,null);
 			} else { 
 			//If not, is the blank tile within the world?
 				if (x + Game.DisplayOffsetX > 0 && y + Game.DisplayOffsetY > 0 && x < CurrentMap.WorldBorder && y < CurrentMap.WorldBorder) {
@@ -190,7 +189,7 @@ public class Game {
 		
 		try {
 		//Display if the tile has a fore tile, display it.
-			graphics.drawImage(CurrentMap.TileSet[x + Game.DisplayOffsetX][y + Game.DisplayOffsetY].ForeTile.Texture, Game.TileSize * x,((Game.TileSize - Game.yoff) * y) - (Game.yoff * 2),null,null);
+			graphics.drawImage(ResourceManager.getTexture(CurrentMap.TileSet[x + Game.DisplayOffsetX][y + Game.DisplayOffsetY].ForeTile.Texture), Game.TileSize * x,((Game.TileSize - Game.yoff) * y) - (Game.yoff * 2),null,null);
 	
 			} catch  (Exception e) {
 				//There is no foretile.
@@ -227,7 +226,7 @@ public class Game {
 		graphics.setColor(Color.white);
 		for (int i = 0; i <= Player.players[Client.PlayerID].inventory.HotBar.length; i++) {
 			try {
-				graphics.drawImage(Player.players[Client.PlayerID].inventory.HotBar[i].tile.Texture, (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
+				graphics.drawImage(ResourceManager.getTexture(Player.players[Client.PlayerID].inventory.HotBar[i].tile.Texture), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
 				graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.HotBar[i].count), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i), Game.TileSize * 2);
 			} catch (Exception e) {}
 		}

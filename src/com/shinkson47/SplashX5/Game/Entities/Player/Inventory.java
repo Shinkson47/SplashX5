@@ -1,12 +1,15 @@
 package com.shinkson47.SplashX5.Game.Entities.Player;
 
+import java.io.Serializable;
+
 import com.shinkson47.SplashX5.Client.Client;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
 import com.shinkson47.SplashX5.Game.Resources.SoundManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.Crafting;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
 
-public class Inventory {
+public class Inventory implements Serializable {
+	private static final long serialVersionUID = -5109869976417644020L;
 	public boolean IsPicked = false;
 	public TileStack InMotion;
 	
@@ -42,9 +45,6 @@ public class Inventory {
 		try {
 		if (InMotion == null) { IsPicked = false; } else { IsPicked = true; }
 		} catch (Exception e) { IsPicked = false; }
-		
-		
-	
 	}
 	
 	TileStack temp; 

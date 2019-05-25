@@ -10,7 +10,6 @@ import com.shinkson47.SplashX5.Game.Entities.Player.Player;
 import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
 import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileBase;
-import com.shinkson47.SplashX5.Game.World.CurrentMap;
 
 public class Inventory {
 
@@ -44,8 +43,8 @@ public class Inventory {
 		//Display tile
 		try {
 			//If there is a tile, draw it
-			if (CurrentMap.TileSet[x][y] != null) {
-					graphics.drawImage(CurrentMap.TileSet[x][y].Texture, (Game.TileSize * x) / Inventory.TileScale,(((Game.TileSize - Game.yoff) / Inventory.TileScale) * y),Game.TileSize / Inventory.TileScale, (Game.TileSize + Game.yoff) / Inventory.TileScale, null,null);
+			if (Game.CurrentMap.TileSet[x][y] != null) {
+					graphics.drawImage(ResourceManager.getTexture(Game.CurrentMap.TileSet[x][y].Texture), (Game.TileSize * x) / Inventory.TileScale,(((Game.TileSize - Game.yoff) / Inventory.TileScale) * y),Game.TileSize / Inventory.TileScale, (Game.TileSize + Game.yoff) / Inventory.TileScale, null,null);
 			}
 			
 			} catch (Exception e) {
@@ -53,7 +52,7 @@ public class Inventory {
 			}
 		try {
 		//Display fore tile.
-			graphics.drawImage(CurrentMap.TileSet[x][y].ForeTile.Texture, (Game.TileSize * x) / Inventory.TileScale,(((Game.TileSize - Game.yoff) / Inventory.TileScale) * y) - (Game.yoff * 2 / Inventory.TileScale),Game.TileSize / Inventory.TileScale, (Game.TileSize + Game.yoff) / Inventory.TileScale, null,null);
+			graphics.drawImage(ResourceManager.getTexture(Game.CurrentMap.TileSet[x][y].ForeTile.Texture), (Game.TileSize * x) / Inventory.TileScale,(((Game.TileSize - Game.yoff) / Inventory.TileScale) * y) - (Game.yoff * 2 / Inventory.TileScale),Game.TileSize / Inventory.TileScale, (Game.TileSize + Game.yoff) / Inventory.TileScale, null,null);
 			} catch  (Exception e) {}
 			}
 		}
@@ -128,7 +127,7 @@ public class Inventory {
 		for (int x = 0; x <= Player.players[Client.PlayerID].inventory.Inventory.length - 1; x++) {
 			for (int y = 0; y <= Player.players[Client.PlayerID].inventory.Inventory[x].length - 1; y++) {
 				try {
-					graphics.drawImage(Player.players[Client.PlayerID].inventory.Inventory[x][y].tile.Texture, ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y),null, null);
+					graphics.drawImage(ResourceManager.getTexture(Player.players[Client.PlayerID].inventory.Inventory[x][y].tile.Texture), ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y),null, null);
 					graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.Inventory[x][y].count), ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y) + Game.TileSize + Game.yoff);		
 				}catch (Exception e) {}
 			}	
@@ -137,7 +136,7 @@ public class Inventory {
 		//hotbar images
 		for (int i = 0; i <= Player.players[Client.PlayerID].inventory.HotBar.length; i++) {
 			try {
-			graphics.drawImage(Player.players[Client.PlayerID].inventory.HotBar[i].tile.Texture, (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
+			graphics.drawImage(ResourceManager.getTexture(Player.players[Client.PlayerID].inventory.HotBar[i].tile.Texture), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i),Game.TileSize, null, null);
 			graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.HotBar[i].count), (ClientWindow.window.getWidth() / 2) - (32 * 10) + (64 * i), Game.TileSize * 2);
 			} catch (Exception e) {}
 		}
@@ -148,7 +147,7 @@ public class Inventory {
 		for (int x = 0; x <= Player.players[Client.PlayerID].inventory.CraftingGrid.length - 1; x++) {
 			for (int y = 0; y <= Player.players[Client.PlayerID].inventory.CraftingGrid[x].length - 1; y++) {
 				try {
-					graphics.drawImage(Player.players[Client.PlayerID].inventory.CraftingGrid[x][y].tile.Texture, ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + (Game.TileSize * 2)) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y),null, null);
+					graphics.drawImage(ResourceManager.getTexture(Player.players[Client.PlayerID].inventory.CraftingGrid[x][y].tile.Texture), ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + (Game.TileSize * 2)) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y),null, null);
 					graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.CraftingGrid[x][y].count), ClientWindow.window.getWidth() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory.length) - (Game.TileSize * (Player.players[Client.PlayerID].inventory.CraftingGrid[0].length * 2) + (Game.TileSize * 2)) + ((Game.TileSize * 2) * x), ClientWindow.window.getHeight() / 2 - (Game.TileSize * Player.players[Client.PlayerID].inventory.Inventory[x].length) + ((Game.TileSize * 2) * y) + Game.TileSize + Game.yoff);		
 				}catch (Exception e) {}
 			}	
@@ -166,7 +165,7 @@ public class Inventory {
 		graphics.setColor(Color.white);
 		graphics.drawRoundRect(100 - Game.TileSize, Game.yoff, Game.TileSize * 3, (Game.TileSize + Game.yoff) * 2,30,30);
 			
-		graphics.drawImage(Player.players[Client.PlayerID].inventory.InMotion.tile.Texture, 100, Game.TileSize,null, null);
+		graphics.drawImage(ResourceManager.getTexture(Player.players[Client.PlayerID].inventory.InMotion.tile.Texture), 100, Game.TileSize,null, null);
 		
 		graphics.drawString(String.valueOf(Player.players[Client.PlayerID].inventory.InMotion.count), 100, (Game.TileSize * 2) + Game.yoff);		
 		

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.shinkson47.SplashX5.Client.ClientRenderer;
 import com.shinkson47.SplashX5.Game.Enumerator.Biome;
+import com.shinkson47.SplashX5.Game.Windows.Game;
  
 public class Voroni {
 	static double p = 3;
@@ -20,7 +21,7 @@ public class Voroni {
 		generated = false;
 		ClientRenderer.Update();
 		size = sz + 1;
-		cells = size / CurrentMap.BScale;
+		cells = size / Game.CurrentMap.BScale;
 		int n = 0;
 		BiomeGrid = new Biome[size][size];
 		px = new int[cells];

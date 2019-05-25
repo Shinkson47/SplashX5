@@ -1,6 +1,8 @@
 package com.shinkson47.SplashX5.Game.Resources.Tiles;
 
-public class TileStack {
+import java.io.Serializable;
+
+public class TileStack implements Serializable {
 	public TileBase tile;
 	public int count;
 	
@@ -11,7 +13,9 @@ public class TileStack {
 	
 	public int add(int i){
 		if (count + i > 64) {
-			return Math.negateExact((64 - i) - count);
+			int initcount = count;
+			count += (64 - count);		
+			return Math.negateExact((64 - i) - initcount);
 		} else {
 			count += i;
 			return 0;
