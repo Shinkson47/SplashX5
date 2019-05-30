@@ -1,6 +1,6 @@
 package com.shinkson47.SplashX5.Interfaces;
 
-import com.sun.prism.Graphics;
+import java.awt.Graphics;
 
 public interface Renderer {
 
