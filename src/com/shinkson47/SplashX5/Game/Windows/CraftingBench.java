@@ -14,10 +14,10 @@ import com.shinkson47.SplashX5.Game.Resources.ResourceManager;
 import com.shinkson47.SplashX5.Game.Resources.Tiles.TileStack;
 
 public class CraftingBench {
-	private static int selectorx = 0;
-	private static int selectory = 0;
+	public static int selectorx = 0;
+	public static int selectory = 0;
 	private static int InventoryRow = 1;
-	private static InventoryAreas area = InventoryAreas.Inventory;
+	public static InventoryAreas area = InventoryAreas.Inventory;
 	private static TileStack[][] CraftingMatrix = new TileStack[4][4];
 	
 	public static void init() {
@@ -100,7 +100,7 @@ public class CraftingBench {
 		}
 		
 		//Crafting boxes
-		for (int x = 0; x <= CraftingMatrix.length; x++) {
+		for (int x = 0; x <= CraftingMatrix.length - 1; x++) {
 			for (int y = 0; y <= CraftingMatrix[x].length - 1; y++) {
 			graphics.fillRect((ClientWindow.window.getWidth() / 2) - (CraftingMatrix.length * Game.TileSize) + ((Game.TileSize * 2) * x) + (Game.TileSize / 2), ((Game.TileSize) * 2) * y + (Game.TileSize * 6) + Game.yoff + 5, 36, 53);
 		}
