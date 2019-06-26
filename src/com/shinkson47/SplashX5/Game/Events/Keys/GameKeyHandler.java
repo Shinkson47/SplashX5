@@ -33,10 +33,15 @@ public class GameKeyHandler {
 			break;
 		default:
 			break;
+		}
+		if (EventHandler.key.getKeyCode() == 27) {
+			Game.InGame = false;
+			Game.Exit();
+			ClientWindow.SetWindow(Windows.Menu);
+		}
+
 	}
-		if (EventHandler.key.getKeyCode() == 27) { Game.InGame = false; Game.Exit(); ClientWindow.SetWindow(Windows.Menu); } 
-	}
-	
+
 	public static void released() {
 		switch (EventHandler.Rkey.getKeyChar()) {
 		case 'w':
@@ -51,7 +56,7 @@ public class GameKeyHandler {
 		case 'd':
 			Player.StopMove(Direction.E, Client.PlayerID);
 			break;
-	}	
+		}
 	}
-	
+
 }

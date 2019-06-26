@@ -7,6 +7,7 @@ import com.shinkson47.SplashX5.Game.Enumerator.InventoryAreas;
 import com.shinkson47.SplashX5.Game.Enumerator.Windows;
 import com.shinkson47.SplashX5.Game.Events.EventHandler;
 import com.shinkson47.SplashX5.Game.Windows.CraftingBench;
+import com.shinkson47.SplashX5.Game.Windows.Inventory;
 
 public class CraftingBenchKeyHandler {
 
@@ -86,6 +87,12 @@ public class CraftingBenchKeyHandler {
 			else
 				CraftingBench.lift();
 			break;
+		case 'c':
+			CraftingBench.Single(Inventory.x, Inventory.y);
+			break;
 		}
+
+		if (EventHandler.key.getKeyCode() == 27)
+			ClientWindow.SetWindow(Windows.Game);
 	}
 }

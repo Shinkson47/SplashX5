@@ -210,21 +210,16 @@ public class Game {
 			// Display it
 			graphics.drawImage(ResourceManager.getTexture("Entities/Player"), (Game.selectorx - Game.DisplayOffsetX) * Game.TileSize, (Game.selectory - Game.DisplayOffsetY) * (Game.TileSize - Game.yoff), null, null);
 
-		// draw hotbar
-		graphics.setColor(Color.LIGHT_GRAY);
-		graphics.fillRoundRect(ClientWindow.window.getWidth() / 2 - Game.TileSize * 10, Game.TileSize - Game.yoff + 2, Game.TileSize * 19, Game.yoff * 3 + Game.TileSize, 30, 30);
+		// draw hotbar image
+		graphics.drawImage(ResourceManager.getTexture("UI/Hotbar"), ClientWindow.window.getWidth() / 2 - Game.TileSize * 10, 0, null, null);
 
-		graphics.setColor(Color.white);
-		graphics.drawRoundRect(ClientWindow.window.getWidth() / 2 - Game.TileSize * 10, Game.TileSize - Game.yoff + 2, Game.TileSize * 19, Game.yoff * 3 + Game.TileSize, 30, 30);
-
-		graphics.setColor(Color.DARK_GRAY);
-		for (int i = 0; i <= Player.players[Client.PlayerID].inventory.HotBar.length; i++)
-			graphics.fillRect(ClientWindow.window.getWidth() / 2 - 32 * 10 + 64 * i, Game.TileSize, 36, 53);
-
+		// Selected hotbar item
 		graphics.setColor(Color.cyan);
 		graphics.fillRect(ClientWindow.window.getWidth() / 2 - 32 * 10 + 64 * Player.players[Client.PlayerID].inventory.HotBarSI - 1, Game.TileSize - 1, 38, 54);
 
+		// items and counts
 		graphics.setColor(Color.white);
+
 		for (int i = 0; i <= Player.players[Client.PlayerID].inventory.HotBar.length; i++)
 			try {
 				graphics.drawImage(ResourceManager.getTexture(Player.players[Client.PlayerID].inventory.HotBar[i].tile.Texture), ClientWindow.window.getWidth() / 2 - 32 * 10 + 64 * i, Game.TileSize, null, null);
