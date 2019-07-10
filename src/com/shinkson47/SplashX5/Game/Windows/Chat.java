@@ -17,7 +17,6 @@ public class Chat {
 	
 	public static void RenderFrame() {
 		ClientRenderer.FrameUpdated = true;
-		ClientRenderer.CauseBackgroundUpdate = true;
 		
 		Game.RenderFrame();
 		

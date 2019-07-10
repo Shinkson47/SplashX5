@@ -10,68 +10,46 @@ import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 import com.shinkson47.SplashX5.Interfaces.Renderer;
 
 
-
+/**
+ * Manages frame rendering for the game client.
+ * 
+ * @author gordie
+ *
+ */
 public class ClientRenderer implements Renderer {
 	
-	
+	/**
+	 * Used by window render methods to indicate weather they have rendered their frame, or not.
+	 */
 	public static boolean FrameUpdated = false;
-	public static void init() {
-		
-	}
 	
+	/**
+	 * Used to store the Client JFrame's graphics.
+	 */
 	public static Graphics graphics;
-	public static void Update() {
-		//GameHandler.Frames++;
+	
+	/**
+	 * Main render method.
+	 * 
+	 * Determines what window the client is currently on, and gets that window to render it's frame, and then displays it.
+	 */
+	public static void Update() {	
+		FrameUpdated = false;																							  	//Render variable preparation
 		
-		Image bdImage = ClientWindow.window.createImage(ClientWindow.window.getWidth(), ClientWindow.window.getHeight());
-		graphics = bdImage.getGraphics();
-		
-		//Buffer, and create new frame
-		
-		setBackground(graphics);
-		//if (!ClientWindow.window.hasFocus()) {return;} //Don't render on focus loss
-		FrameUpdated = false;
+		Image bdImage = new BufferedImage(ClientWindow.window.getWidth(), ClientWindow.window.getHeight(), BufferedImage.TYPE_INT_ARGB); //Create a buffer to draw to
+		graphics = bdImage.getGraphics();																				  	//Get the graphics as a method of drawing to the buffer
+																										 
 		
 		try {
-			Class<?> Window = Class.forName("com.shinkson47.SplashX5.Game.Windows." + ClientWindow.GetWindow().toString());
-			Method update = Window.getMethod("RenderFrame");
-			update.invoke(null);
-		} catch (Exception e) {
-			//Logger.log("Could not call a renderer for window :" + ClientWindow.GetWindow().toString() + ". Is there a valid class with a static Update method?", ClientWindow.class, LogState.Error);
-			//Client.ParseException(e);
-		}		
+			Class<?> Window = Class.forName("com.shinkson47.SplashX5.Game.Windows." + ClientWindow.GetWindow().toString()); //Get class of the current client window
+			Method update = Window.getMethod("RenderFrame");																//Get the window's render method
+			update.invoke(null);																							//Invoke the render method
+		} catch (Exception e) { /* Render errors are no longer handled here. */ }		
 		
-		ClientWindow.window.getGraphics().drawImage(bdImage, 0, 0, null);
+		ClientWindow.window.getGraphics().drawImage(bdImage, 0, 0, null);													//Draw the buffer to the client window
 		
-		if (FrameUpdated != true) {
-			Logger.log("Frame was not indicated as being handled. Is there a valid renderer for the window: " + ClientWindow.GetWindow() +"?", ClientRenderer.class, LogState.Error);
+		if (FrameUpdated != true) {																							//Has the frame been indicated as being handled by the render method?
+			Logger.log("Frame was not indicated as being handled. Is there a valid renderer for the window: " + ClientWindow.GetWindow() +"?", ClientRenderer.class, LogState.Error); //Log
 		}
 	}
-
-	private static BufferedImage view = new BufferedImage(ClientWindow.width, ClientWindow.height, BufferedImage.TYPE_INT_RGB);
-	private static int[] pixels;
-	private static int colour;
-	public static boolean CauseBackgroundUpdate = true;
-	private static void setBackground(Graphics graphics) {
-		view  = new BufferedImage(ClientWindow.window.getWidth(), ClientWindow.window.getHeight(), BufferedImage.TYPE_INT_RGB);
-		if (CauseBackgroundUpdate) {
-			pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
-				if (Client.KeyPressedInFrame) {
-					colour = 0x404080;
-				} else { 
-					colour = 0x303080;
-				}
-				
-			for(int index = 0; index < pixels.length; index++) {pixels[index] = colour;} //set array to colour
-			
-
-		
-		graphics.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
-		CauseBackgroundUpdate = !CauseBackgroundUpdate; //Update has been handled.
-		}
-	}
-
-	
-	
-	
 }

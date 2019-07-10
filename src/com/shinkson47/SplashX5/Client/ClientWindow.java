@@ -32,7 +32,7 @@ public class ClientWindow {
 		window.setResizable(false);
 					
 		window.addKeyListener(EventHandler.Listener);
-		window.setTitle(Client.ClientName + Client.ClientVersion);
+		window.setTitle(Client.CLIENT_NAME + Client.CLIENT_VERSION);
 
 		MouseEventHandler mouseHandler = new MouseEventHandler();
 		
@@ -81,7 +81,7 @@ public class ClientWindow {
 	public static void Update() {
 		//window.setName(Client.ClientName + Client.ClientVersion + CurrentWindow); //Current window doesn't show, therefore this is useless.
 		if (DoForceFocus) {window.requestFocusInWindow();}
-		if (!window.isVisible() && !IgnoreHiddenWindow) {Client.HaltClient();}
+		if (!window.isVisible() && !IgnoreHiddenWindow) {Client.HaltClient(-1);}
 		if (IgnoreHiddenWindow && window.isVisible()) { IgnoreHiddenWindow = !IgnoreHiddenWindow; }
 }
 		

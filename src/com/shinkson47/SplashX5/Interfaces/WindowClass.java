@@ -18,16 +18,7 @@ public interface WindowClass {
 		//Ran on every frame in which this window is open
 		
 		//Tell the render handler that the frame has been handled.
-		ClientRenderer.FrameUpdated = true;
-		
-		/*
-		 * Optional, tell the render handler to update the background of the frame in this window.
-		 * In focus, the background is blue, else it is static.
-		 * 
-		 *  However, it cannot be seen if it is covered by images etc, so remove this if the background cannot be seen.
-		 */
-		ClientRenderer.CauseBackgroundUpdate = true;
-		
+		ClientRenderer.FrameUpdated = true;		
 		
 		//Get the frame to draw to
 		Graphics g = ClientRenderer.graphics;

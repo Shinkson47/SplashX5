@@ -137,12 +137,8 @@ public class Chat {
 					ClientWindow.SetWindow(current);
 					return "Failed to switch windows correctly";
 				}
-			case "/CauseBackgroundUpdate":
-				ClientRenderer.CauseBackgroundUpdate = true;
-				return "An update should occour on the next frame!";
-
 			case "/CauseHalt":
-				Client.HaltClient(); // no need to return;
+				Client.HaltClient(-1); // no need to return;
 				break;
 
 			case "/CauseCrash":

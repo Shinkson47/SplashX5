@@ -1,171 +1,190 @@
 package com.shinkson47.SplashX5.Client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import com.shinkson47.SplashX5.Game.Enumerator.ClientState;
 import com.shinkson47.SplashX5.Game.Enumerator.LogState;
 import com.shinkson47.SplashX5.Game.Enumerator.Windows;
 import com.shinkson47.SplashX5.Game.Events.EventHandler;
 
+/**
+ * Defines the main client of Splash X5
+ * 
+ * @author gordie
+ *
+ */
 public class Client implements Runnable {
+	
+	/**
+	 * Stores the current state of the client
+	 */
 	public static ClientState state = ClientState.PreInit;
-	protected static boolean doClientRun = true;
-	public final static String ClientVersion = "V0.7.5-A", ClientName = "Splash X5 ";
-	public static boolean CauseCrash = false, KeyPressedInFrame = false, CauseRestart = false;
+	
+
+	/**
+	 * Determines if the client may run
+	 */
+	private static boolean doClientRun = true;
+
+	/**
+	 * Defines the client
+	 */
+	public static final String CLIENT_VERSION = "V0.7.5-A";
+	public static final String CLIENT_NAME = "Splash X5 ";
+	
+	/**
+	 * Event trigger booleans
+	 * 
+	 * These booleans are checked in the client loop
+	 */
+	public static boolean CauseCrash = false, CauseRestart = false;
+	
+	/**
+	 * Runtime variables
+	 */
 	public static int LoadPercent = 0, ClientRestartCount = 0, PlayerID;
+	
+	/**
+	 * Runtime variables
+	 */
+	public static boolean KeyPressedInFrame = false; 
+	
+	/**
+	 * Indicates the nanosecond in which the client started
+	 */
 	public static long ClientStartTime = 0L;
+	
+	/**
+	 * Thread which contains the command line
+	 */
 	public static Thread commandthread = new Thread(new ClientCommandline());
 	
+	private static final double NANO_SECOND_CONVERSION = 1000000000.0 / 60;
+	
+	/**
+	 * Main client execution entry point.
+	 * Is called when the client thread is started, and remains alive until the thread is closed.
+	 */
 	@Override
 	public void run() {
 		try {
-		if (state == ClientState.PreInit) {
-			//By this point, the window is open, BUT
-			//Client has not yet loaded.
-			state = ClientState.Init;
-			ClientWindow.SetWindow(Windows.Init);
+		if (state == ClientState.PreInit) {			//Client in it's pre init phase.
+			 										//By this point the window is open but Client has not yet loaded.
+			commandthread.start();					//Start the command line thread
+													//Start next client load phase, INIT.
+			state = ClientState.Init;				//Indicate new phase
+			ClientWindow.SetWindow(Windows.Init);	//Switch to the init window.
 			
-			//The client is now loaded, run post init script
-			state = ClientState.PostInit;
-			ClientWindow.SetWindow(Windows.PostInit);
+													//The client is now loaded. 
+			state = ClientState.PostInit;			//indicate the client is now at post init stage
+			ClientWindow.SetWindow(Windows.PostInit);//run post init script
 		}
 		
-		commandthread.start();
+		Logger.log("Client is ready!", Client.class, LogState.Info);//Log that the client has loaded
 		
-		Logger.log("Client is ready!", Client.class, LogState.Info);
-		long lastTime = System.nanoTime(); //Used to keep updates well timed
-		double nanoSecondConversion = 1000000000.0 / 60; //TODO Frame limit 
+		long lastTime = System.nanoTime(); 							//Variables used to keep updates and frames well timed
 		double changeInSeconds = 0;
 		
-		while(true) {	//Client loop
-			//prepare for next client loop
-			if (CauseRestart) {RestartClient();}
-			long now = System.nanoTime();
-			changeInSeconds += (now - lastTime) / nanoSecondConversion;
+		while(doClientRun) {										//Client loop
+																	//prepare for next client loop
+			if (CauseRestart) {RestartClient();}					//If the client is waiting to restart, restart the client.
+			if (state != ClientState.Running) {break;}				//If the client is not supposed to be running, exit the runtime loop.
 			
-			//DoClientLoop
-			if (ClientWindow.window.hasFocus()) {
-			while(changeInSeconds >= 1) {
+			long now = System.nanoTime();							//Loop timing variables
+			changeInSeconds += (now - lastTime) / NANO_SECOND_CONVERSION;
+			
+			while(changeInSeconds >= 1) {							//Wait until the next update tick should occur
 				changeInSeconds--;
-
-				//===========EVERY TICK=========//
-				//Don't put code here, use the event handler.
-				EventHandler.Update(); 
-			}} else {
-				//Cause pause tick
-				EventHandler.Pause();
 			}
-
-			//===========EVERY FRAME=========//
-			//Don't put code here, use the event handler 'OnFrameEvent'
-			EventHandler.RenderNextFrame();
+			
+			if (ClientWindow.window.hasFocus()) {					//If the client has focus
+																	//Don't put code here, use the event handler.
+				EventHandler.Update(); 								//Use the event handler to cause the update tick.
+			} else {
+																	//Don't put code here, use the event handler.
+				EventHandler.Pause();								//Use the event handler to cause a pause tick.
+			}
+																	//Don't put code here, use the event handler 'OnFrameEvent'
+			EventHandler.RenderNextFrame();							//Render and display the client's next frame.
 			 
-			lastTime = now; // Prep for next client loop
-			}
+			lastTime = now; 										//prepare for next client loop.
+		}
+		
+		Logger.log("Client execution loop has stopped!", Client.class, LogState.Warn); //Client loop has exited
 		
 		} catch (Exception e) {
-			//Catch exceptions thrown from within the client loop
-			//This doesn't catch exceptions from events caused by the mouse or keyboard.
-			ParseException(e);
+									//Catch exceptions thrown from within the client loop
+									//This doesn't catch exceptions from events caused by the mouse or keyboard.
+			ParseException(e);		//Parse a client runtime exception.
 		}
 	}
 
+	/**
+	 * Causes crashes and manages runtime exceptions
+	 * 
+	 * @param e : The exception to handle.
+	 */
 	public static void ParseException(Exception e) {
-		EventHandler.Halt(); //Attempt to safely shutdown the client
 		
-		if (ClientHandler.CrashException == null) //If there is currently no crash, start one - otherwise ignore it.
-			{
-			ClientHandler.CrashException = e; //parse exception to crash handler to use.
-			}
+		if (ClientHandler.client.state != ClientState.Crashed) {			//If the client is not currently in a crash state,
+			EventHandler.Halt(); 											//Attempt to safely shutdown the client
+			ClientHandler.CrashException = e; 								//parse exception to crash handler to use.
+			ClientHandler.client.state = ClientState.Crashed;									//Indicate that the client has crashed.
+		}
 		
-		if (ClientWindow.window.isVisible()) { ClientWindow.window.setVisible(false); } //Hide client, else the thread will terminate with the window still open, but unresponsive.
+		if (ClientWindow.window.isVisible()) { ClientWindow.window.setVisible(false); } //Hide client, else the thread will terminate and the window will remain open, but unresponsive.
 
 		@SuppressWarnings("unused")
-		int i = 1 / 0; // Cause a divide by 0 exception to crash thread and parse to ClientHandler's Handle crash
+		int i = 1 / 0;		 // Cause a divide by 0 exception to crash thread and parse the crash state up the call stack to the ClientHandler's Handle crash
 	}
 
+	/**
+	 * Restarts the client thread.
+	 */
 	public static void RestartClient() {
-		ClientHandler.ClientThread.setName("restart"); //Indicate that the client closing is deliberate, and cause a restart in Client Handler
-		Logger.log("Preparing to restart.", Client.class, LogState.Warn);
-		HaltClient();
+		ClientHandler.ClientThread.setName("restart"); 						//Indicate to the Client Handler that the client closing is deliberate, and cause a restart in Client Handler
+		Logger.log("Preparing to restart.", Client.class, LogState.Warn);   //Log event
+		HaltClient(-1);														//Halt the client.
 	}
 	
-	/*
+	/**
+	 * Halts the client.
+	 * 
 	 * Close codes:
 	 * 1: Generic exception in the client loop.
 	 * 2: Client closed unexpectedly with no exception 
 	 * 3: Client ran out of memory
 	 * 100: Client called for halt, typically indicates an intended shutdown.
+	 * 
+	 * -1: indicated no code specified. Causes code 100.
+	 * 
+	 * @param Code : the halt code.
 	 */
-	public static void HaltClient() {
-	state = ClientState.Halted;
-	Logger.log("Halting Client.", Client.class, LogState.Warn);
-	EventHandler.Halt();
-	java.lang.Runtime.getRuntime().halt(100);
-	}
-	
-	
-	
-	
-	 // declare low level and high level objects for input
-    private static InputStream inStream;
-    private static DataInputStream inDataStream;
-
-    // declare low level and high level objects for output
-    private static OutputStream outStream;
-    private static DataOutputStream outDataStream;
-
-    // declare socket
-    private static Socket connection;
-
-    // declare attribute to told details of remote machine and port
-    private static String remoteMachine;
-    private static int port;
-
-	public static void Connect() {
-        try{
-            // attempt to create a connection to the server
-            connection = new Socket(remoteMachine,port);
-            
-            // create an input stream from the server
-            inStream = connection.getInputStream();
-            inDataStream = new DataInputStream(inStream);
-
-            //create output stream to the server
-            outStream = connection.getOutputStream();
-            outDataStream = new DataOutputStream(outStream);
-
-            //send the host IP to the server
-            //outDataStream.writeUTF(connection.getLocalAddress().getHostAddress());
-            
-            outDataStream.writeChars("ping");
-            Logger.log(inDataStream.readUTF(), Client.class, LogState.Info);
-            
-        }catch (UnknownHostException e){
-            //msg.setText("Unknow host");
-        }
-        catch (IOException except){
-            //msg.setText("Network Exception");
-        }
+	public static void HaltClient(int Code) {
+		ClientHandler.client.state = ClientState.Halted;									//Indicate that the client is halting
+		Logger.log("Halting Client.", Client.class, LogState.Warn); //Log event
+		EventHandler.Halt();										//Cause halt events
+		
+		if (Code == -1) {											//If there is no code specified
+			Runtime.getRuntime().halt(100);							//Use code 100
+		} else {
+			Runtime.getRuntime().halt(Code);						//else use specified halt code.
+		}
 	}
 
+	/**
+	 * Restarts the command line thread.
+	 */
 	@SuppressWarnings("deprecation")
 	public static void RestartCommandThread() {
-		if (Client.commandthread.isAlive()) {
-		try {
-			Client.commandthread.getClass().getMethod("Halt").invoke(null);
-			commandthread.stop();
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {}}
-		
-		commandthread = new Thread(new ClientCommandline());
-		commandthread.start();
+		if (Client.commandthread.isAlive()) {											//Is the thread alive?
+			try {									
+				Client.commandthread.getClass().getMethod("WillHalt").invoke(null);		//Cause it's halt events
+				commandthread.stop();													//Halt the thread
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {} //Ignore, likely indicates a dead or empty thread.
+		}
+		commandthread = new Thread(new ClientCommandline());							//Create a new thread instance.
+		commandthread.start();															//Start the new thread.
 	}
 	
 }

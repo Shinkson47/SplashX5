@@ -29,9 +29,8 @@ public class Inventory {
 
 	public static void RenderFrame() {
 		ClientRenderer.FrameUpdated = true;
-		ClientRenderer.CauseBackgroundUpdate = true;
 		Graphics graphics = ClientRenderer.graphics;
-
+		
 		// Background
 		// This will only draw chunks that have been generated.
 		// For every tile on screen, in x and y directions

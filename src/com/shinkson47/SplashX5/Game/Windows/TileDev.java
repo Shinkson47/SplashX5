@@ -278,7 +278,6 @@ public class TileDev{
 	public static void RenderFrame() {
 		Graphics graphics = ClientRenderer.graphics;
 		ClientRenderer.FrameUpdated = true;
-		ClientRenderer.CauseBackgroundUpdate = true;
 		
 		
 		for (int x = 0; x <= 63; x++) {

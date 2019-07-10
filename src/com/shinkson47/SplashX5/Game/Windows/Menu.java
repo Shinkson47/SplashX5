@@ -36,7 +36,7 @@ public class Menu{
 			ClientWindow.SetWindow(Windows.Extras);
 			break;
 		case 2:
-			Client.HaltClient();
+			Client.HaltClient(-1);
 			break;
 	}}
 		
